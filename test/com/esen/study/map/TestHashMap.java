@@ -1,4 +1,4 @@
-package com.esen.study.hashmap;
+package com.esen.study.map;
 
 import java.util.HashMap;
 import java.util.Map;

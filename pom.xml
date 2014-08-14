@@ -42,6 +42,12 @@
 			<artifactId>jdbc</artifactId>
 			<version>main</version>
 		</dependency>
+		
+		<dependency>
+			<groupId>internationalized</groupId>
+			<artifactId>han2pinyin</artifactId>
+			<version>1.2.18</version>
+		</dependency>
 
 		<dependency>
 			<groupId>commons-fileupload</groupId>
