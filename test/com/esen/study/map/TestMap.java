@@ -3,8 +3,8 @@ package com.esen.study.map;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.TreeMap;
 import java.util.Map.Entry;
+import java.util.TreeMap;
 
 import org.junit.Test;
 
@@ -40,16 +40,54 @@ public class TestMap {
 			treeMap.put(PinYin.getPinYin(s[i], 2), s[i]);
 		}
 
-//		{daota=倒塔, mofashi=魔法师, nvjisi=女祭司, shengbei=圣杯, yinshi=隐士, yuren=愚人}
+		//		{daota=倒塔, mofashi=魔法师, nvjisi=女祭司, shengbei=圣杯, yinshi=隐士, yuren=愚人}
 		System.out.println(treeMap.toString());
-		
-//		entrySet
+
+		//		entrySet
 		Iterator<Map.Entry<String, String>> iter = treeMap.entrySet().iterator();
-		while(iter.hasNext()) {
+		while (iter.hasNext()) {
 			Entry<String, String> entry = iter.next();
 			String key = entry.getKey();
 			String value = entry.getValue();
 			System.out.println(key + ":\t" + value);
+		}
+	}
+
+	@Test
+	public void testContainObj() {
+		Map<Info, String> map = new HashMap<TestMap.Info, String>();
+		String name = "a";
+		String tname = "t";
+		String sname = "s";
+
+		Info info = new Info(name, tname, sname);
+		map.put(info, "s");
+
+		Info info2 = new Info(name, tname, sname);
+		System.out.println(map.containsKey(info2));
+		System.out.println(map.get(info2));
+	}
+
+	class Info {
+		String name;
+
+		String tname;
+
+		String sname;
+
+		public Info(String name, String tname, String sname) {
+			super();
+			this.name = name;
+			this.tname = tname;
+			this.sname = sname;
+		}
+
+		@Override
+		public boolean equals(Object obj) {
+			if (obj instanceof Info) {
+				return this.name.equals(((Info) obj).name);
+			}
+			return super.equals(obj);
 		}
 	}
 }
