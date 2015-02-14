@@ -1,9 +1,76 @@
 package com.esen.study.regexp;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import org.junit.Assert;
 import org.junit.Test;
 
 public class testRegexp {
+	/**
+	 * ReplaceAll开头的(?s)相当于Pattern.DOTALL的作用
+	 */
+	@Test
+	public void testReplace() throws Exception {
+		String s = "aaa<ac:emoticon ac:name=\"tick\" />afadsfdsfasf<ac:emoticon ac:name=\"light-on\" />";
+		String a = "aaa<img src=\"images/tick.png\"></img>afadsfdsfasf" + "<img src=\"images/light-on.png\"></img>";
+		Assert.assertEquals(s.replaceAll("<ac:emoticon ac:name=\"([a-z\\-]*)\" />", "<img src=\"images/$1.png\"></img>"), a);
+		
+		
+		
+		String s1 = "<ul class=\"space-list entity-list\">\n                <li class=\"space-list-item entity-list-item  first\">\n        <div class=\"entity-attribute entity-logo entity-icon\">\n            <a target=_blank href=\"http://172.21.1.232:8090/wiki/display/AAAAA\">\n                <img class=\"space logo\" src=\"http://172.21.1.232:8090/wiki/images/logo/confluence_48_trans.png\" alt=\"Space Logo\"/>\n            </a>\n        </div>\n        <div class=\"entity-attribute space-info entity-info\">\n            <a target=_blank class=\"space-name\" href=\"http://172.21.1.232:8090/wiki/display/AAAAA\">aaaaa</a>\n        </div>\n                    <div class=\"entity-attribute entity-favourites entity-icon space-favourites right\" data-entity-id=\"AAAAA\" data-entity-type=\"space\">\n                                <a target=_blank class=\"icon icon-remove-fav hidden\" title=\"从收藏夹中删除此空间\" href=\"#\">从您的收藏夹中删除“aaaaa”空间</a>\n                <a target=_blank class=\"icon icon-add-fav\" title=\"将此空间加入收藏夹\" href=\"#\">新增“aaaaa”到您的收藏夹</a>\n                <span class=\"icon icon-wait hidden\">正在读取</span>\n            </div>\n            </li>\n                <li class=\"space-list-item entity-list-item \">\n        <div class=\"entity-attribute entity-logo entity-icon\">\n            <a target=_blank href=\"http://172.21.1.232:8090/wiki/display/sandbox\">\n                <img class=\"space logo\" src=\"http://172.21.1.232:8090/wiki/images/logo/confluence_48_trans.png\" alt=\"Space Logo\"/>\n            </a>\n        </div>\n        <div class=\"entity-attribute space-info entity-info\">\n            <a target=_blank class=\"space-name\" href=\"http://172.21.1.232:8090/wiki/display/sandbox\">沙箱</a>\n        </div>\n                    <div class=\"entity-attribute entity-favourites entity-icon space-favourites right\" data-entity-id=\"sandbox\" data-entity-type=\"space\">\n                                <a target=_blank class=\"icon icon-remove-fav hidden\" title=\"从收藏夹中删除此空间\" href=\"#\">从您的收藏夹中删除“沙箱”空间</a>\n                <a target=_blank class=\"icon icon-add-fav\" title=\"将此空间加入收藏夹\" href=\"#\">新增“沙箱”到您的收藏夹</a>\n                <span class=\"icon icon-wait hidden\">正在读取</span>\n            </div>\n            </li>\n    </ul>";
+//		Pattern pattern1 = Pattern.compile("<div class=\"entity-attribute entity-favourites entity-icon space-favourites right\" data-entity-id=(.*?)</div>",Pattern.DOTALL);
+//	  Matcher matcher1 = pattern1.matcher(s1);
+//	  System.out.println(matcher1.find());
+//	  System.out.println(matcher1.replaceAll(""));
+		String a1 = "<ul class=\"space-list entity-list\">\n                <li class=\"space-list-item entity-list-item  first\">\n        <div class=\"entity-attribute entity-logo entity-icon\">\n            <a target=_blank href=\"http://172.21.1.232:8090/wiki/display/AAAAA\">\n                <img class=\"space logo\" src=\"http://172.21.1.232:8090/wiki/images/logo/confluence_48_trans.png\" alt=\"Space Logo\"/>\n            </a>\n        </div>\n        <div class=\"entity-attribute space-info entity-info\">\n            <a target=_blank class=\"space-name\" href=\"http://172.21.1.232:8090/wiki/display/AAAAA\">aaaaa</a>\n        </div>\n                    \n            </li>\n                <li class=\"space-list-item entity-list-item \">\n        <div class=\"entity-attribute entity-logo entity-icon\">\n            <a target=_blank href=\"http://172.21.1.232:8090/wiki/display/sandbox\">\n                <img class=\"space logo\" src=\"http://172.21.1.232:8090/wiki/images/logo/confluence_48_trans.png\" alt=\"Space Logo\"/>\n            </a>\n        </div>\n        <div class=\"entity-attribute space-info entity-info\">\n            <a target=_blank class=\"space-name\" href=\"http://172.21.1.232:8090/wiki/display/sandbox\">沙箱</a>\n        </div>\n                    \n            </li>\n    </ul>";
+		Assert.assertEquals(
+				s1.replaceAll(
+						"(?s)<div class=\"entity-attribute entity-favourites entity-icon space-favourites right\" data-entity-id=(.*?)</div>",
+						""), a1);
+		String sss = "<div class=\"entity-attribute entity-favourites entity-icon space-favourites right\" data-entity-id=\"AAAXXX</div>";
+	}
+
+	@Test
+	public void testMatcherReplaceAll() {
+		Pattern pattern = Pattern.compile("正则表达式(.*?)");
+		Matcher matcher = pattern.matcher("正则表达式 Hello World,正则表达式 Hello World");
+		//替换第一个符合正则的数据
+		System.out.println(matcher.replaceAll("$1Java"));
+		System.out.println("正则表达式 Hello World,正则表达式 Hello World".replaceAll("正则表达式(.*?)", "$1Java"));
+	}
+
+	@Test
+	public void testMatcherReplacement() {
+		Pattern pattern = Pattern.compile("正则表达式");
+		Matcher matcher = pattern.matcher("正则表达式 Hello World,正则表达式 Hello World ");
+		StringBuffer sbr = new StringBuffer();
+		while (matcher.find()) {
+			System.out.println(matcher.hasAnchoringBounds());
+			System.out.println(matcher.hasTransparentBounds());
+			matcher.appendReplacement(sbr, "Java");
+		}
+		matcher.appendTail(sbr);
+		System.out.println(sbr.toString());
+	}
+
+	@Test
+	public void testMatcherReplace() {
+		Pattern pattern = Pattern.compile("<ac:image(.*)>");
+		String s = "XacXX<ac:image ac:height=\"117\" ac:width=\"585\">GacGG<ac:image ac:align=\"center\" ac:width=\"585\">";
+		Matcher matcher = pattern.matcher(s);
+		int start = 0;
+		StringBuffer sb = new StringBuffer();
+		while (matcher.find(start)) {
+			sb.append(s.substring(start, matcher.start()));
+			sb.append(matcher.group().replaceAll("ac:(?!image)", ""));
+			start = matcher.end();
+		}
+		sb.append(s.substring(start));
+		System.out.println(sb.toString());
+//		System.out.println("acXXX<ac:image ac:height=\"117\" ac:width=\"585\">GGacG".replaceAll("", ""));
+	}
+
 	@Test
 	public void test1() {
 		String s1 = "(5.5%,-7.7%)";
@@ -19,11 +86,14 @@ public class testRegexp {
 
 		String s3 = "2014-09-01,2014-10-22";
 		Assert.assertTrue(s3.matches("^\\d{4}(\\-\\d{2}){2},\\d{4}(\\-\\d{2}){2}$"));
+
+		Assert.assertTrue("　".matches("(\\s|　)"));
 	}
 
 	@Test
 	public void testCN() {
-		String reg = "^[^\\x00-\\xff]+$";
+		//		String reg = "^[^\\x00-\\xff]+$";
+		String reg = "^[\u4e00-\u9fa5]+$";
 
 		String s1 = "，";
 		Assert.assertTrue(s1.matches(reg));
@@ -34,7 +104,7 @@ public class testRegexp {
 		String s3 = "❤℡";
 		Assert.assertTrue(s3.matches(reg));
 
-		String s4 = "这个是纯中文测试，纯中文";
+		String s4 = "这个是纯中文测试";
 		Assert.assertTrue(s4.matches(reg));
 
 		String s5 = "%";

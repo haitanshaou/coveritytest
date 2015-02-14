@@ -1,5 +1,9 @@
 package com.esen.study.map;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -167,6 +171,46 @@ public class TestTreeMap {
 		System.out.println(map.get(co1));//	this is ca3
 		System.out.println(map.get(co2));//	this is ca3
 		System.out.println(map.get(co3));// null
+	}
+
+	@Test
+	public void test() {
+		TreeMap<String,Integer> newMap=new TreeMap<String,Integer>();
+		newMap.put("b", 1);
+		newMap.put("a", 9);
+		newMap.put("c", 4);
+		newMap.put("g", 7);
+		newMap.put("e", 6);
+		newMap.put("d", 3);
+		newMap.put("f", 10);
+
+		ByValueComparator bvc  =new ByValueComparator(newMap);
+		List<String> newList=new ArrayList<String>(newMap.keySet());
+		Collections.sort(newList, bvc);
+		for(String str:newList){
+		System.out.println(str+"================================="+newMap.get(str));
+		}
+	}
+	class ByValueComparator implements Comparator<String> {
+		TreeMap<String, Integer> base_map;
+
+		public ByValueComparator(TreeMap<String, Integer> base_map) {
+			this.base_map = base_map;
+		}
+
+		public int compare(String arg0, String arg1) {
+			if (!base_map.containsKey(arg0) || !base_map.containsKey(arg1)) {
+				return 0;
+			}
+
+			if (base_map.get(arg0) < base_map.get(arg1)) {
+				return 1;
+			} else if (base_map.get(arg0) == base_map.get(arg1)) {
+				return 0;
+			} else {
+				return -1;
+			}
+		}
 	}
 
 	class catObj implements Comparable<catObj> {

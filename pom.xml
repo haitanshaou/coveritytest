@@ -31,54 +31,79 @@
 			<version>2.0</version>
 			<scope>provided</scope>
 		</dependency>
-		<!-- 依赖util和jdbc两个工程 -->
-		<dependency>
-			<groupId>com.esen</groupId>
-			<artifactId>util</artifactId>
-			<version>main</version>
-		</dependency>
-		<dependency>
-			<groupId>com.esen</groupId>
-			<artifactId>jdbc</artifactId>
-			<version>main</version>
-		</dependency>
-		
-		<dependency>
-			<groupId>internationalized</groupId>
-			<artifactId>han2pinyin</artifactId>
-			<version>1.2.18</version>
-		</dependency>
+
 
 		<dependency>
-			<groupId>commons-fileupload</groupId>
-			<artifactId>commons-fileupload</artifactId>
-			<version>1.2.1</version>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<version>1.2.8</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-lang</groupId>
+			<artifactId>commons-lang</artifactId>
+			<version>2.6</version>
 		</dependency>
 
+	<!-- crowd部分，单点登录处理需要用到的包 -->
 		<dependency>
-			<groupId>commons-io</groupId>
-			<artifactId>commons-io</artifactId>
-			<version>1.3.1</version>
+			<groupId>com.esen.4am</groupId>
+			<artifactId>crowd-core</artifactId>
+			<version>2.4.10</version>
 		</dependency>
-
-		<!-- 标签库所需的包 -->
 		<dependency>
-			<groupId>taglibs</groupId>
-			<artifactId>standard</artifactId>
-			<version>1.0.6</version>
+			<groupId>com.esen.4am</groupId>
+			<artifactId>crowd-integration-api</artifactId>
+			<version>2.4.10</version>
 		</dependency>
-
 		<dependency>
-			<groupId>org.json</groupId>
-			<artifactId>json</artifactId>
-			<version>20080701</version>
+			<groupId>com.esen.4am</groupId>
+			<artifactId>crowd-integration-client-common</artifactId>
+			<version>2.4.10</version>
 		</dependency>
-
-		<!-- freemarker -->
 		<dependency>
-			<groupId>org.freemarker</groupId>
-			<artifactId>freemarker</artifactId>
-			<version>2.3.19</version>
+			<groupId>com.esen.4am</groupId>
+			<artifactId>crowd-integration-client-rest</artifactId>
+			<version>2.4.10</version>
+		</dependency>
+		<dependency>
+			<groupId>com.esen.4am</groupId>
+			<artifactId>crowd-integration-api</artifactId>
+			<version>2.4.10</version>
+		</dependency>
+		<dependency>
+			<groupId>com.esen.4am</groupId>
+			<artifactId>crowd-integration-client-common</artifactId>
+			<version>2.4.10</version>
+		</dependency>
+		<dependency>
+			<groupId>com.esen.4am</groupId>
+			<artifactId>crowd-integration-client-rest</artifactId>
+			<version>2.4.10</version>
+		</dependency>
+		<dependency>
+			<groupId>com.esen.4am</groupId>
+			<artifactId>crowd-core</artifactId>
+			<version>2.4.10</version>
+		</dependency>
+		<dependency>
+			<groupId>com.esen.4am</groupId>
+			<artifactId>embedded-crowd-api</artifactId>
+			<version>2.4.10</version>
+		</dependency>
+		<dependency>
+			<groupId>opensymphony</groupId>
+			<artifactId>xwork</artifactId>
+			<version>1.2.3</version>
+		</dependency>
+		<dependency>
+			<groupId>com.opensymphony</groupId>
+			<artifactId>webwork</artifactId>
+			<version>2.2.6</version>
+		</dependency>
+		<dependency>
+			<groupId>com.esen.4am</groupId>
+			<artifactId>atlassian-core</artifactId>
+			<version>4.5.10</version>
 		</dependency>
 
 		<!-- Struts MVC框架 -->

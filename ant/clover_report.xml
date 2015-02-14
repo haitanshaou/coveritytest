@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="study" basedir="D:/clover/study" default="clover.report">
+	<!-- clover的相关配置 -->
+	<property name="ant.libhome" location="F:/TDDOWNLOAD/apache-ant-1.7.1/lib" />
+	<property name="clover.jar" location="${ant.libhome}/clover.jar" />
+	<taskdef resource="cloverlib.xml" classpath="${clover.jar}" />
+	<taskdef resource="cloverjunitlib.xml" classpath="${clover.jar}" />
+	<property name="clover.ordering" value="failfast" />
+
+	<!-- @ordering: optional; values "failfast", "orginal" or "random"; default:
+	    "failfast"; -->
+	<property name="clover.optimize" value="true" />
+	<!-- Enable/Disable optimization -->
+	<property name="clover.minimize" value="true" />
+	<!-- Exclude tests, or run all? -->
+	<property name="clover.fullrunevery" value="10" />
+	<clover-env />
+</project>

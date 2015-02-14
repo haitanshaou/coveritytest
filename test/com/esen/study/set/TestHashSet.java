@@ -6,8 +6,11 @@ import java.util.Set;
 import org.junit.Test;
 
 public class TestHashSet {
+	/**
+	 * retainAll 取2集合的交集
+	 */
 	@Test
-	public void test() {
+	public void testRetainAll() {
 		Set<Integer> set = new HashSet<Integer>();
 		set.add(1);
 		set.add(2);

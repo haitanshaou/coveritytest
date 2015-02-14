@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 这个是在自己电脑上跑的打包脚本,没有更新代码操作,没有日志changelog相关处理,单纯的打包 -->
+<project name="study" basedir="D:/clover/study" default="exewar">
+	<!-- clover的相关配置 -->
+	<property name="ant.libhome" location="F:/TDDOWNLOAD/apache-ant-1.7.1/lib" />
+	<property name="clover.jar" location="${ant.libhome}/clover.jar" />
+	<taskdef resource="cloverlib.xml" classpath="${clover.jar}" />
+	<taskdef resource="cloverjunitlib.xml" classpath="${clover.jar}" />
+	<property name="clover.ordering" value="failfast" />
+
+	<!-- @ordering: optional; values "failfast", "orginal" or "random"; default:
+	    "failfast"; -->
+	<property name="clover.optimize" value="true" />
+	<!-- Enable/Disable optimization -->
+	<property name="clover.minimize" value="true" />
+	<!-- Exclude tests, or run all? -->
+	<property name="clover.fullrunevery" value="10" />
+	<clover-env />
+
+	<property environment="env" />
+
+	<!-- 项目路径 -->
+	<property name="main.home" value="D:/esendev/gitrepos/study" />
+	<!-- 编译文件 存放路径 -->
+	<property name="project.classes" value="${main.home}/web/WEB-INF/classes" />
+	<!-- lib路径 -->
+	<property name="project.jar" value="${main.home}/web/WEB-INF/lib" />
+
+	<!-- 包输出目录 -->
+	<property name="project.release" location="${main.home}/release" />
+
+	<!-- 当前日期 -->
+	<tstamp prefix="build.">
+		<format property="date" pattern="yyyyMMddHHmmss" locale="zh,CN" />
+	</tstamp>
+	<tstamp prefix="build.">
+		<format property="day" pattern="yyyyMMdd" locale="zh,CN" />
+	</tstamp>
+
+	<path id="build.lib">
+		<path>
+			<fileset dir="${project.jar}" includes="*.jar" />
+		</path>
+	</path>
+
+	<target name="clean" description="文件清理及创建">
+		<!-- 清理文件 -->
+		<delete dir="${project.classes}" />
+		<!--delete dir="${project.jar}" /-->
+
+		<!-- 创建需要的文件 -->
+		<mkdir dir="${project.classes}" />
+		<mkdir dir="${project.release}" />
+		<mkdir dir="${project.jar}" />
+		
+		<!-- 将jar包从mvn拷贝到lib下 -->
+		<exec dir="${main.home}" executable="cmd" failonerror="true">
+			<arg line="/c mvn -f pom.xml dependency:copy-dependencies -DoutputDirectory=${project.jar}" />
+		</exec>
+		
+		<!-- clover相关 -->
+		<copy todir="${project.jar}">
+			<fileset dir="${ant.libhome}">
+				<include name="clover.jar" />
+				<include name="clover.license" />
+			</fileset>
+		</copy>
+	</target>
+
+	<!-- 初始化buildnumber等信息 -->
+	<target name="init">
+		<!-- buildnumber,Version -->
+		<buildnumber />
+
+		<!-- War包输出文件名。(以当前日期作为标签) -->
+		<property name="project.warfile" value="${project.release}/${build.date}_BUILD/study_${build.date}.war" />
+	</target>
+
+	<target name="compile_project" description="编译工程">
+		<mkdir dir="${project.classes}" />
+
+		<!-- 拷贝资源文件 -->
+		<copy todir="${project.classes}" encoding="utf-8">
+			<fileset dir="${main.home}/src" excludes="**/*.java,**/*.class" />
+		</copy>
+
+		<javac destdir="${project.classes}" encoding="UTF-8" debug="true" debuglevel="lines,vars,source" target="1.5" source="1.5" nowarn="on" listfiles="true" deprecation="false">
+			<src path="${main.home}/src" />
+			<classpath refid="build.lib" />
+		</javac>
+	</target>
+
+	<target name="package_war" description="将项目打包成WAR">
+		<!-- 创建war包存放路径目录 -->
+		<mkdir dir="${project.release}/${build.date}_BUILD" />
+
+		<war destfile="${project.warfile}" webxml="${main.home}/web/WEB-INF/web.xml">
+			<fileset dir="web" />
+			<manifest>
+				<attribute name="Project-Version" value="build ${build.date}_r" />
+			</manifest>
+		</war>
+	</target>
+	
+	<target name="build_war" description="将项目打包成WAR">
+		<war destfile="${project.release}/study ${build.date}.war" webxml="${main.home}/web/WEB-INF/web.xml">
+			<fileset dir="${main.home}/web" />
+			<manifest>
+				<attribute name="Project-Version" value="(build ${build.date})" />
+			</manifest>
+		</war>
+	</target>
+
+	<target name="exewar" depends="with.clover,clean,compile_project,build_war" description="执行编译、打包，不更新代码 ">
+		<!-- 清理 -->
+		<delete dir="${project.classes}" />
+		<delete dir="${project.jar}" />
+	</target>
+</project>
