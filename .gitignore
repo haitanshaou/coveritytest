@@ -1,1 +1,4 @@
 /target
+/release
+/web/WEB-INF/classes
+/web/WEB-INF/lib

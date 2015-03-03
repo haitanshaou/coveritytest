@@ -10,9 +10,27 @@
 	<build>
 		<!-- 设置输出路径和工程属性中的输出路径一致 -->
 		<outputDirectory>web/WEB-INF/classes</outputDirectory>
+		<plugins>
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>1.5</source>
+					<target>1.5</target>
+					<encoding>UTF-8</encoding>
+					<compilerArguments>
+						<extdirs>web\WEB-INF\lib</extdirs>
+					</compilerArguments>
+				</configuration>
+			</plugin>
+		</plugins>
 	</build>
 
 	<dependencies>
+		<dependency>
+			<groupId>com.esen</groupId>
+			<artifactId>util</artifactId>
+			<version>main</version>
+		</dependency>
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
@@ -42,6 +60,16 @@
 			<groupId>commons-lang</groupId>
 			<artifactId>commons-lang</artifactId>
 			<version>2.6</version>
+		</dependency>
+		<dependency>
+			<groupId>org.json</groupId>
+			<artifactId>json</artifactId>
+			<version>20080701</version>
+		</dependency>
+		<dependency>
+			<groupId>internationalized</groupId>
+			<artifactId>han2pinyin</artifactId>
+			<version>1.2.18</version>
 		</dependency>
 
 	<!-- crowd部分，单点登录处理需要用到的包 -->
