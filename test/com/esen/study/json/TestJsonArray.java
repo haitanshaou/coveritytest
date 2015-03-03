@@ -12,16 +12,16 @@ public class TestJsonArray {
 		System.out.println(ja.length());// 0
 		System.out.println(ja.isNull(0));// true
 	}
-	
+
 	@Test
-	public void test() throws Exception{
+	public void test() throws Exception {
 		JSONArray ja = new JSONArray();
 		for (int i = 0; i < 3; i++) {
 			JSONObject jo = new JSONObject();
-			jo.put("kstd"+i, i+"");
+			jo.put("kstd" + i, i + "");
 			ja.put(jo);
 		}
-		
+
 		System.out.println(ja.toString());
 	}
 }

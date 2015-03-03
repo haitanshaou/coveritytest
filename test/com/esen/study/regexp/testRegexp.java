@@ -15,14 +15,12 @@ public class testRegexp {
 		String s = "aaa<ac:emoticon ac:name=\"tick\" />afadsfdsfasf<ac:emoticon ac:name=\"light-on\" />";
 		String a = "aaa<img src=\"images/tick.png\"></img>afadsfdsfasf" + "<img src=\"images/light-on.png\"></img>";
 		Assert.assertEquals(s.replaceAll("<ac:emoticon ac:name=\"([a-z\\-]*)\" />", "<img src=\"images/$1.png\"></img>"), a);
-		
-		
-		
+
 		String s1 = "<ul class=\"space-list entity-list\">\n                <li class=\"space-list-item entity-list-item  first\">\n        <div class=\"entity-attribute entity-logo entity-icon\">\n            <a target=_blank href=\"http://172.21.1.232:8090/wiki/display/AAAAA\">\n                <img class=\"space logo\" src=\"http://172.21.1.232:8090/wiki/images/logo/confluence_48_trans.png\" alt=\"Space Logo\"/>\n            </a>\n        </div>\n        <div class=\"entity-attribute space-info entity-info\">\n            <a target=_blank class=\"space-name\" href=\"http://172.21.1.232:8090/wiki/display/AAAAA\">aaaaa</a>\n        </div>\n                    <div class=\"entity-attribute entity-favourites entity-icon space-favourites right\" data-entity-id=\"AAAAA\" data-entity-type=\"space\">\n                                <a target=_blank class=\"icon icon-remove-fav hidden\" title=\"从收藏夹中删除此空间\" href=\"#\">从您的收藏夹中删除“aaaaa”空间</a>\n                <a target=_blank class=\"icon icon-add-fav\" title=\"将此空间加入收藏夹\" href=\"#\">新增“aaaaa”到您的收藏夹</a>\n                <span class=\"icon icon-wait hidden\">正在读取</span>\n            </div>\n            </li>\n                <li class=\"space-list-item entity-list-item \">\n        <div class=\"entity-attribute entity-logo entity-icon\">\n            <a target=_blank href=\"http://172.21.1.232:8090/wiki/display/sandbox\">\n                <img class=\"space logo\" src=\"http://172.21.1.232:8090/wiki/images/logo/confluence_48_trans.png\" alt=\"Space Logo\"/>\n            </a>\n        </div>\n        <div class=\"entity-attribute space-info entity-info\">\n            <a target=_blank class=\"space-name\" href=\"http://172.21.1.232:8090/wiki/display/sandbox\">沙箱</a>\n        </div>\n                    <div class=\"entity-attribute entity-favourites entity-icon space-favourites right\" data-entity-id=\"sandbox\" data-entity-type=\"space\">\n                                <a target=_blank class=\"icon icon-remove-fav hidden\" title=\"从收藏夹中删除此空间\" href=\"#\">从您的收藏夹中删除“沙箱”空间</a>\n                <a target=_blank class=\"icon icon-add-fav\" title=\"将此空间加入收藏夹\" href=\"#\">新增“沙箱”到您的收藏夹</a>\n                <span class=\"icon icon-wait hidden\">正在读取</span>\n            </div>\n            </li>\n    </ul>";
-//		Pattern pattern1 = Pattern.compile("<div class=\"entity-attribute entity-favourites entity-icon space-favourites right\" data-entity-id=(.*?)</div>",Pattern.DOTALL);
-//	  Matcher matcher1 = pattern1.matcher(s1);
-//	  System.out.println(matcher1.find());
-//	  System.out.println(matcher1.replaceAll(""));
+		//		Pattern pattern1 = Pattern.compile("<div class=\"entity-attribute entity-favourites entity-icon space-favourites right\" data-entity-id=(.*?)</div>",Pattern.DOTALL);
+		//	  Matcher matcher1 = pattern1.matcher(s1);
+		//	  System.out.println(matcher1.find());
+		//	  System.out.println(matcher1.replaceAll(""));
 		String a1 = "<ul class=\"space-list entity-list\">\n                <li class=\"space-list-item entity-list-item  first\">\n        <div class=\"entity-attribute entity-logo entity-icon\">\n            <a target=_blank href=\"http://172.21.1.232:8090/wiki/display/AAAAA\">\n                <img class=\"space logo\" src=\"http://172.21.1.232:8090/wiki/images/logo/confluence_48_trans.png\" alt=\"Space Logo\"/>\n            </a>\n        </div>\n        <div class=\"entity-attribute space-info entity-info\">\n            <a target=_blank class=\"space-name\" href=\"http://172.21.1.232:8090/wiki/display/AAAAA\">aaaaa</a>\n        </div>\n                    \n            </li>\n                <li class=\"space-list-item entity-list-item \">\n        <div class=\"entity-attribute entity-logo entity-icon\">\n            <a target=_blank href=\"http://172.21.1.232:8090/wiki/display/sandbox\">\n                <img class=\"space logo\" src=\"http://172.21.1.232:8090/wiki/images/logo/confluence_48_trans.png\" alt=\"Space Logo\"/>\n            </a>\n        </div>\n        <div class=\"entity-attribute space-info entity-info\">\n            <a target=_blank class=\"space-name\" href=\"http://172.21.1.232:8090/wiki/display/sandbox\">沙箱</a>\n        </div>\n                    \n            </li>\n    </ul>";
 		Assert.assertEquals(
 				s1.replaceAll(
@@ -68,7 +66,7 @@ public class testRegexp {
 		}
 		sb.append(s.substring(start));
 		System.out.println(sb.toString());
-//		System.out.println("acXXX<ac:image ac:height=\"117\" ac:width=\"585\">GGacG".replaceAll("", ""));
+		//		System.out.println("acXXX<ac:image ac:height=\"117\" ac:width=\"585\">GGacG".replaceAll("", ""));
 	}
 
 	@Test

@@ -175,7 +175,7 @@ public class TestTreeMap {
 
 	@Test
 	public void test() {
-		TreeMap<String,Integer> newMap=new TreeMap<String,Integer>();
+		TreeMap<String, Integer> newMap = new TreeMap<String, Integer>();
 		newMap.put("b", 1);
 		newMap.put("a", 9);
 		newMap.put("c", 4);
@@ -184,13 +184,14 @@ public class TestTreeMap {
 		newMap.put("d", 3);
 		newMap.put("f", 10);
 
-		ByValueComparator bvc  =new ByValueComparator(newMap);
-		List<String> newList=new ArrayList<String>(newMap.keySet());
+		ByValueComparator bvc = new ByValueComparator(newMap);
+		List<String> newList = new ArrayList<String>(newMap.keySet());
 		Collections.sort(newList, bvc);
-		for(String str:newList){
-		System.out.println(str+"================================="+newMap.get(str));
+		for (String str : newList) {
+			System.out.println(str + "=================================" + newMap.get(str));
 		}
 	}
+
 	class ByValueComparator implements Comparator<String> {
 		TreeMap<String, Integer> base_map;
 
