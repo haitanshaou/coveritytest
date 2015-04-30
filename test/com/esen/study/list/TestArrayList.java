@@ -1,13 +1,32 @@
 package com.esen.study.list;
 
 import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
 import org.junit.Test;
 
 public class TestArrayList {
+	/**
+	 * 测试ArrayList顺序问题
+	 */
+	@Test
+	public void testOrderly() throws Exception {
+		List<String> a = new ArrayList<String>();
+		a.add("ccc");
+		a.add("b");
+		a.add("d");
+		a.add("a");
+		
+		a.remove("d");
+		a.add("c");
+		Collections.sort(a);
+		for (Iterator<String> iterator = a.iterator(); iterator.hasNext();) {
+			String o = iterator.next();
+			System.out.println(o);
+		}
+	}
 
 	/**
 	 * a是原list，b是变化后的，要找到新增和删除的内容
