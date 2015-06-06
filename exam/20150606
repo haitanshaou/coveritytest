@@ -1,0 +1,24 @@
+一、
+	1、产品功能架构图
+	2、以某个模块详细说明该模块的功能
+	3、模块用例图
+
+二、报销单的情况
+	1、报表有哪几种类型，特点是什么
+	2、如何设置报表户和机构用户权限
+	3、画出审批的流程图
+	4、数据退回有哪几种，区别是什么
+	
+三、页面
+	<div>
+		<div style="display: inline-block;border:1px solid red;font-color:green;">
+		</div>
+		<div style="display: inline-block;border:1px solid;font-color:red;dotted green;">
+		</div>
+	</div>
+
+四、写个MyList，可以增删清除修改
+
+五、数据库操作（方言和关闭顺序）
+
+六、2个升序数组合并，要求保持升序
