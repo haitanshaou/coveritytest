@@ -2,11 +2,8 @@ package com.esen.study.regexp;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -32,6 +29,75 @@ public class testPath {
 
 	Set<String> urls = new HashSet<String>();
 	
+	private void getSurplus(String surplus) throws Exception {
+		File file = new File(surplus);
+		FileInputStream fis = new FileInputStream(file);
+		try {
+			String line;
+			while (null != (line = StmFunc.readLine(fis, StrFunc.UTF8))) {
+				urls.add(line);
+			}
+		} finally {
+			fis.close();
+		}
+	}
+
+	@Test
+	public void testI51() throws Exception {
+		String surplus = "C:/Users/Administrator/Desktop/i5.1-20150710/i51全部路径.txt";
+		getSurplus(surplus);
+
+		System.err.println("总的路径个数：" + urls.size());
+
+		String[] fns = new String[] { "C:/Users/Administrator/Desktop/i5.1-20150710/i5.1_320000 安全报告-all.txt",
+				"C:/Users/Administrator/Desktop/i5.1-20150710/i5.1_320102053490090 安全报告-all.txt",
+				"C:/Users/Administrator/Desktop/i5.1-20150710/i5.1_admin 安全报告-all.txt",
+				"C:/Users/Administrator/Desktop/i5.1-20150710/i51_32010201 安全报告-all.txt" };
+		String[] rootPaths = new String[] { "http://172.21.50.101:8080/irpt/", "http://172.21.50.101:8080/irpt/",
+				"http://172.21.50.101:8080/irpt/", "http://172.21.50.101:8080/irpt/", "http://172.21.50.101:8080/irpt/" };
+
+		getAppScanUrl(fns, rootPaths);
+		System.err.println("appscan扫的路径个数：" + appscanurl.size());
+		
+		urls.removeAll(appscanurl);
+		System.err.println("未跑到的路径个数:"+urls.size());
+		
+		for (Iterator<String> iterator = urls.iterator(); iterator.hasNext();) {
+			String noclover = (String) iterator.next();
+			System.out.println(noclover);
+		}
+
+//		appscanurl.removeAll(urls);
+//		System.err.println(appscanurl.size());
+//
+//		for (Iterator<String> iterator = appscanurl.iterator(); iterator.hasNext();) {
+//			String clover = (String) iterator.next();
+//			System.out.println(clover);
+//		}
+	}
+
+	@Test
+	public void testClover0507() throws Exception {
+		String surplus = "C:/Users/Administrator/Desktop/征管安全覆盖/i435未跑到路径.txt";
+		getSurplus(surplus);
+
+		System.err.println("总的路径个数：" + urls.size());
+
+		String[] fns = new String[] { "C:/Users/Administrator/Desktop/admin 安全报告-20150507-URL 包含排除的和失败的.txt" };
+		String[] rootPaths = new String[] { "http://172.21.50.101:9001/" };
+
+		getAppScanUrl(fns, rootPaths);
+		System.err.println("appscan扫的路径个数：" + appscanurl.size());
+		
+		urls.removeAll(appscanurl);
+		System.err.println("未跑到的路径个数:"+urls.size());
+		
+		for (Iterator<String> iterator = urls.iterator(); iterator.hasNext();) {
+			String noclover = (String) iterator.next();
+			System.out.println(noclover);
+		}
+	}
+
 	@Test
 	public void testClove() throws Exception{
 //		String rootPath = "D:/esendev/securityworkspace/i_r4.3.5_zg/pages";
