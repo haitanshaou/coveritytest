@@ -29,6 +29,10 @@ public class testAppScanPath {
 
 	Set<String> urls = new HashSet<String>();
 	
+	/**
+	 * 获取剩余的总url路径
+	 * @param surplus
+	 */
 	private void getSurplus(String surplus) throws Exception {
 		File file = new File(surplus);
 		FileInputStream fis = new FileInputStream(file);
@@ -225,4 +229,43 @@ public class testAppScanPath {
 			}
 		}
 	}
+	
+//	——————————————————————————————————————————————————————————————————————————————————
+	/**
+	 * 存放有问题的url路径
+	 */
+	Set<String> problemUrls = new HashSet<String>();
+
+	private void getProblemUrls(String[] files) throws Exception  {
+		for (int i = 0; i < files.length; i++) {
+			File file = new File(files[i]);
+			FileInputStream fis = new FileInputStream(file);
+			try {
+				String line;
+				while (null != (line = StmFunc.readLine(fis, StrFunc.UTF8))) {
+					String prefix = "URL：：";
+					if (line.startsWith(prefix)) {
+						problemUrls.add(line.substring(prefix.length()));
+					}
+				}
+			} finally {
+				fis.close();
+			}
+		}
+	}
+
+	/**
+	 * 提取AppScan报告中指出的有问题的url路径
+	 */
+	@Test
+	public void testGetAppScanUrl() throws Exception {
+		String[] files = {"C:/Users/Administrator/Desktop/i5.1_320000 安全报告-0729.txt",
+				"C:/Users/Administrator/Desktop/i5.1_admin 安全报告-0804.txt"};
+		getProblemUrls(files);
+		for (Iterator<String> iterator = problemUrls.iterator(); iterator.hasNext();) {
+			String url = (String) iterator.next();
+			System.out.println(url);
+		}
+	}
+	
 }
