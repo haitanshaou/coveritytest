@@ -24,7 +24,7 @@ import com.esen.util.StrFunc;
  * 最后进行比对，哪些没有跑到的
  * @author chenlan
  */
-public class testPath {
+public class testAppScanPath {
 	Set<String> appscanurl = new HashSet<String>();
 
 	Set<String> urls = new HashSet<String>();

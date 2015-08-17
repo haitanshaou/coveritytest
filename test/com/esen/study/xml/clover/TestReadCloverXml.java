@@ -122,7 +122,7 @@ public class TestReadCloverXml {
 		} finally {
 			fos.close();
 		}
-		double clover = TestReadCloverXml.getCloverByPath("E:/clover/irpt/clover/irptweb-server-20150713/clover.xml",
+		double clover = TestReadCloverXml.getCloverByPath("E:/clover/irpt/clover/irptweb-server-20150803/clover.xml",
 				"irpt");
 		System.out.println(clover);
 	}
@@ -192,7 +192,7 @@ public class TestReadCloverXml {
 					if (FILE.equals(cnode.getNodeName())) {
 						if (((Element) cnode).getAttribute(PATH).startsWith(RESPONSEPATH + project)) {
 							//							System.out.println(((Element) cnode).getAttribute("name"));
-							//							javacount++;
+							javacount++;
 							FileFunc.writeStrToFile(RESULTPATH, ((Element) cnode).getAttribute(PATH), true, StrFunc.UTF8);
 							FileFunc.writeStrToFile(RESULTPATH, ",", true, StrFunc.UTF8);
 							getclover(cnode, CLASS, null, project);

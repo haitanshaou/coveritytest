@@ -74,7 +74,7 @@ public class testSecurityRegexp {
    * 20121226 by kangx
    * 匹配BI系统资源ID,包含有数字,大小写字母,中繁日文,$,~,/
    * */
-  public static Pattern RESID = Pattern.compile("[\\w\u0800-\u9fa5~/$\\-( |&#xA0;)]+");
+  public static Pattern RESID = Pattern.compile("[\\w\u0800-\u9fa5~/$\\-( |&#xA0;)\\.,%]+");
 
 	@Test
 	public void testRes() throws Exception {
@@ -83,9 +83,9 @@ public class testSecurityRegexp {
 	}
 	@Test
 	public void test() throws Exception {
-		String value = "</script";
+		String value = "<area ...>";
 ////		checkId(value);
-		checkParam(value, SCRIPT_XSS, true, true);
+		checkParam(value, SCRIPT_XSS, true, false);
 		//		checkUrl(value);
 		
 //		Pattern p = Pattern.compile("[-\\w,;]+");
@@ -140,9 +140,10 @@ public class testSecurityRegexp {
   public static final Pattern SCRIPT_XSS = Pattern
   		.compile(".*?((<|\\%3c).*(script.*?(>|\\%3e).*?(<|\\%3c).*?script.*?(>|\\%3e))" +
   				"|((<|\\%3c).*((img)|(frame)|(a))[\\s+]+.*?[\\/]?(>|\\%3e))|(javascript)" +
-  				"|((style).*(:|%3a).*?(expression)|(\\/\\*.*\\*\\/))" +
+  				"|((style).*(:|%3a)?.*?(expression)|(\\/\\*.*\\*\\/))" +
   				"|((content-type(:|(\\%3a)).*(;|(\\%3b)))+)" +
-  				"|((<|\\%3c)\\/.*(script.*?(>|\\%3e)))).*?",Pattern.CASE_INSENSITIVE);
+  				"|((<|\\%3c)\\/.*(script.*?(>|\\%3e)))).*?",Pattern.DOTALL | Pattern.CASE_INSENSITIVE);
+	
 //	public static final Pattern SCRIPT_XSS = Pattern.compile("[^<>\r\n\t&\'\"\\x00]*");
 	
 	/**
