@@ -41,8 +41,10 @@ public class testSecurityRegexp {
 		System.out.println("joIn".matches("(?-i:union|join|from|select|update|delete|where|or|and|not|between|like|is)"));
 	}
 	
-	public static Pattern JSONSTRING = Pattern.compile("\\{(\"[^']+\":\"[^']+\",)*\"[^']+\":\"[^']+\"\\}"
-			+ "|\\[(\\{(\"[^']+\":\"[^']+\",)*\"[^']+\":\"[^']+\"\\})+\\]");
+	public static Pattern JSONSTRING = Pattern.compile(
+			"\\{(\"[^']+((\":\"[^']+\")|true|false|([+-]?[\\d\\.]+)),)*\"[^']+((\":\"[^']+\")|true|false|([+-]?[\\d\\.]+))\\}"
+					+ "|\\[(\\{(\"[^']+((\":\"[^']+\")|true|false|([+-]?[\\d\\.]+)),)*\"[^']+((\":\"[^']+\")|true|false|([+-]?[\\d\\.]+))\\})+\\]",
+			Pattern.CASE_INSENSITIVE);
 
 	@Test
 	public void testjsonreg() throws Exception {
@@ -56,9 +58,12 @@ public class testSecurityRegexp {
 		j.put("factLength", "2");
 		ja.put(j);
 		JSONObject j2 = new JSONObject();
-		j2.put("1", "v");
+		j2.put("c",1);
+		j2.put("a", false);
+		j2.put("b", -2.3);
 		ja.put(j2);
-		checkParam(j.toString(), JSONSTRING, false, false);
+		System.out.println(ja.toString());
+		checkParam(ja.toString(), JSONSTRING, false, false);
 	}
 	
 	@Test
