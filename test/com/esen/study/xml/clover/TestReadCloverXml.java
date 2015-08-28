@@ -122,7 +122,7 @@ public class TestReadCloverXml {
 		} finally {
 			fos.close();
 		}
-		double clover = TestReadCloverXml.getCloverByPath("E:/clover/irpt/clover/irptweb-server-20150803/clover.xml",
+		double clover = TestReadCloverXml.getCloverByPath("E:/clover/irpt/clover/irptweb-server-20150827/clover.xml",
 				"irpt");
 		System.out.println(clover);
 	}
@@ -155,10 +155,15 @@ public class TestReadCloverXml {
 		int coveredelements = 0;
 		int total = 0;
 		double result = 0.0;
+		
 		for (Iterator<CloverBean> iterator = list.iterator(); iterator.hasNext();) {
 			CloverBean cloverbean = iterator.next();
-			coveredelements += cloverbean.getCloverelements();
+			coveredelements += cloverbean.getCoveredelements();
 			total += cloverbean.getElements();
+			FileFunc.writeStrToFile("C:/Users/Administrator/Desktop/clover.txt",
+					cloverbean.getJavaname() + "\t" + cloverbean.getCoveredelements() + "\t" + cloverbean.getElements(), true,
+					StrFunc.UTF8);
+			FileFunc.writeStrToFile("C:/Users/Administrator/Desktop/clover.txt", "\r\n", true, StrFunc.UTF8);
 		}
 		System.out.println(coveredelements + "\t" + total);
 		result = (coveredelements * 100) / total;
@@ -174,10 +179,10 @@ public class TestReadCloverXml {
 				if (METRICS.equals(cnode.getNodeName())) {
 					if (StrFunc.isNull(attribute)) {
 						// attribute为空说明走到最后了，需要统计
-						CloverBean cloverbean = new CloverBean(StrFunc.str2int(((Element) cnode).getAttribute(COVEREDELEMENTS), 0),
-								StrFunc.str2int(((Element) cnode).getAttribute(STATEMENTS), 0), StrFunc.str2int(
-										((Element) cnode).getAttribute(METHODS), 0), StrFunc.str2int(
-										((Element) cnode).getAttribute(ELEMENTS), 0));
+						String javaname = node.getAttributes().getNamedItem("name").getNodeValue();
+						CloverBean cloverbean = new CloverBean(javaname, StrFunc.str2int(
+								((Element) cnode).getAttribute(COVEREDELEMENTS), 0), StrFunc.str2int(
+								((Element) cnode).getAttribute(ELEMENTS), 0));
 						FileFunc.writeStrToFile(RESULTPATH, cloverbean.toString(), true, StrFunc.UTF8);
 						FileFunc.writeStrToFile(RESULTPATH, "\r\n", true, StrFunc.UTF8);
 						list.add(cloverbean);
@@ -212,43 +217,23 @@ public class TestReadCloverXml {
 class CloverBean {
 	private int coveredelements = 0;
 
-	private int statements = 0;
-
-	private int methods = 0;
-
 	private int elements = 0;
+	
+	private String javaname;
 
-	public CloverBean(int coveredelements, int statements, int methods, int elements) {
+	public CloverBean(String javaname, int coveredelements, int elements) {
 		super();
 		this.coveredelements = coveredelements;
-		this.statements = statements;
-		this.methods = methods;
 		this.elements = elements;
-		System.out.println(this.toString());
+		this.javaname = javaname;
 	}
 
-	public int getCloverelements() {
+	public int getCoveredelements() {
 		return coveredelements;
 	}
 
 	public void setCoveredelements(int coveredelements) {
 		this.coveredelements = coveredelements;
-	}
-
-	public int getStatements() {
-		return statements;
-	}
-
-	public void setStatements(int statements) {
-		this.statements = statements;
-	}
-
-	public int getMethods() {
-		return methods;
-	}
-
-	public void setMethods(int methods) {
-		this.methods = methods;
 	}
 
 	public int getElements() {
@@ -259,11 +244,17 @@ class CloverBean {
 		this.elements = elements;
 	}
 
+	public String getJavaname() {
+		return javaname;
+	}
+
+	public void setJavaname(String javaname) {
+		this.javaname = javaname;
+	}
+
 	@Override
 	public String toString() {
-		//		return "CloverBean [cloverelements=" + cloverelements + ", statements=" + statements + ", methods=" + methods
-		//				+ ", elements=" + elements + "]";
-		return coveredelements + "," + statements + "," + methods + "," + elements;
+		return coveredelements + "," + elements;
 	}
 
 }
