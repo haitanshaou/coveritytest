@@ -74,16 +74,6 @@ public class TestReadCloverXml {
 	private static final String COVEREDELEMENTS = "coveredelements";
 
 	/**
-	 * statements节点
-	 */
-	private static final String STATEMENTS = "statements";
-
-	/**
-	 * methods节点
-	 */
-	private static final String METHODS = "methods";
-
-	/**
 	 * elements节点
 	 */
 	private static final String ELEMENTS = "elements";
@@ -122,8 +112,8 @@ public class TestReadCloverXml {
 		} finally {
 			fos.close();
 		}
-		double clover = TestReadCloverXml.getCloverByPath("E:/clover/irpt/clover/irptweb-server-20150827/clover.xml",
-				"irpt");
+		double clover = TestReadCloverXml.getCloverByPath("E:/clover/irpt/clover/irptweb-server-20150828/clover.xml",
+				"esenface",new String[]{"com.esen.platform.open"});
 		System.out.println(clover);
 	}
 
@@ -133,7 +123,7 @@ public class TestReadCloverXml {
 	 * @return 
 	 * @throws Exception 
 	 */
-	private static double getCloverByPath(String xmlpath, String project) throws Exception {
+	private static double getCloverByPath(String xmlpath, String project, String[] excludes) throws Exception {
 		File file = new File(xmlpath);
 		FileInputStream fis = new FileInputStream(file);
 		try {
@@ -145,7 +135,7 @@ public class TestReadCloverXml {
 				Node projectnode = rootlist.item(i);
 				if (projectnode instanceof Element) {
 					if (PROJECT.equals(projectnode.getNodeName())) {
-						getclover(projectnode, PACKAGE, FILES, project);
+						getclover(projectnode, PACKAGE, FILES, project, excludes);
 					}
 				}
 			}
@@ -171,7 +161,7 @@ public class TestReadCloverXml {
 		return result;
 	}
 
-	private static void getclover(Node node, String name, String attribute, String project) {
+	private static void getclover(Node node, String name, String attribute, String project, String[] excludes) {
 		NodeList nodelist = node.getChildNodes();
 		for (int i = 0; i < nodelist.getLength(); i++) {
 			Node cnode = nodelist.item(i);
@@ -200,13 +190,25 @@ public class TestReadCloverXml {
 							javacount++;
 							FileFunc.writeStrToFile(RESULTPATH, ((Element) cnode).getAttribute(PATH), true, StrFunc.UTF8);
 							FileFunc.writeStrToFile(RESULTPATH, ",", true, StrFunc.UTF8);
-							getclover(cnode, CLASS, null, project);
+							getclover(cnode, CLASS, null, project, excludes);
 						} else {
 							// 如果不是指定工程下的不统计
 							break;
 						}
 					} else if (PACKAGE.equals(cnode.getNodeName())) {
-						getclover(cnode, FILE, CLASSES, project);
+						String packagename = cnode.getAttributes().getNamedItem("name").getNodeValue();
+						boolean find = false;
+						if (null != excludes) {
+							for (int j = 0; j < excludes.length; j++) {
+								if (packagename.startsWith(excludes[j])) {
+									find = true;
+									break;
+								}
+							}
+						}
+						if (!find) {
+							getclover(cnode, FILE, CLASSES, project, excludes);
+						}
 					}
 				}
 			}
