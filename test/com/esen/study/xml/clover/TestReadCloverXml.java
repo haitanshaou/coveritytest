@@ -13,6 +13,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import com.esen.util.ArrayFunc;
 import com.esen.util.FileFunc;
 import com.esen.util.StrFunc;
 import com.esen.util.XmlFunc;
@@ -112,18 +113,38 @@ public class TestReadCloverXml {
 		} finally {
 			fos.close();
 		}
-		double clover = TestReadCloverXml.getCloverByPath("E:/clover/irpt/clover/irptweb-server-20150828/clover.xml",
-				"esenface",new String[]{"com.esen.platform.open"});
-		System.out.println(clover);
+		double es_clover = TestReadCloverXml.getCloverByPath("E:/clover/irpt/clover/irptweb-server-20150828/clover.xml",
+				"esenface", new String[] { "com.esen.platform.open", "com.esen.open" }, null);
+		System.out.println(es_clover);
+		double i_clover = TestReadCloverXml.getCloverByPath("E:/clover/irpt/clover/irptweb-server-20150828/clover.xml",
+				"irpt", new String[] { "com.esen.i.mobile" }, new String[] { "ActionWriterNavigator.java",
+						"ActionCalcExp.java", "ActionClientCreateGroup.java", "ActionClientListDoc.java",
+						"ActionClientShowTestTask.java", "ActionGetLoginInfo.java", "ActionTaskManager.java",
+						"ActionListTask.java", "GenerateTasksInfo.java", "ActionBbhGridData.java", "ActionBbhLocate.java",
+						"ActionHzForward.java", "ActionTrasPage.java", "ActionBIDatasourceMgr.java", "ActionGrpMgr.java",
+						"ActionGrpShow.java", "GroupForm.java", "QsForm.java", "WSReportCalculatorTest.java",
+						"Reports2ExcelFactory.java", "ExcelInfoImpl.java", "ReportToExcel.java", "Reports2ExcelImpl.java",
+						"ActionBatchChangeBbh.java", "AbstractFieldsMgr.java", "BatchChangeBbhBrowser.java",
+						"BatchChangeBbhExpCompilerHelper.java", "BatchChangeBbhFormatExpToSqlExp.java", "BatchChangeBbhInfo.java",
+						"BatchChangeBbhMgr.java", "BatchChangeBbhProgress.java", "ApprovalPassedAction.java",
+						"BackReApprovalAction.java", "DatasBackAction.java", "DefaultBackAction.java", "DefaultCommitAction.java",
+						"HierarchyBackAction.java", "DeleteBbh.java", "DataCopyService.java", "ActionDataFetch.java",
+						"DataFetcher.java", "DataFetcherFactory.java", "DataFetcherFactoryDefault.java", "DataFetcherDefault.java",
+						"DatasetReadQueryData.java", "TaskConfig.java", "TaskConfigQueryData.java", "TmpPatWriterUtil.java",
+						"TmpTxtWriterUtil.java", "SyncDataSvrRepairListener.java", "SyncResHashTree.java",
+						"SyncResHashTreeBuilder.java", "SyncResHashTreeNode.java", "ActionEIProgress.java", "AnaRpExpManager.java",
+						"ModifyTask.java", "ModifyTaskDbImpl.java", "ModifyTaskListener.java" });
+		System.out.println(i_clover);
 	}
 
 	/**
 	 * @param xmlpath clover.xml 的路径
 	 * @param project 工程名称
+	 * @param excludes 排除的包路径
 	 * @return 
 	 * @throws Exception 
 	 */
-	private static double getCloverByPath(String xmlpath, String project, String[] excludes) throws Exception {
+	private static double getCloverByPath(String xmlpath, String project, String[] excludes, String[] exclass) throws Exception {
 		File file = new File(xmlpath);
 		FileInputStream fis = new FileInputStream(file);
 		try {
@@ -135,7 +156,7 @@ public class TestReadCloverXml {
 				Node projectnode = rootlist.item(i);
 				if (projectnode instanceof Element) {
 					if (PROJECT.equals(projectnode.getNodeName())) {
-						getclover(projectnode, PACKAGE, FILES, project, excludes);
+						getclover(projectnode, PACKAGE, FILES, project, excludes, exclass);
 					}
 				}
 			}
@@ -161,7 +182,7 @@ public class TestReadCloverXml {
 		return result;
 	}
 
-	private static void getclover(Node node, String name, String attribute, String project, String[] excludes) {
+	private static void getclover(Node node, String name, String attribute, String project, String[] excludes, String[] exclass) {
 		NodeList nodelist = node.getChildNodes();
 		for (int i = 0; i < nodelist.getLength(); i++) {
 			Node cnode = nodelist.item(i);
@@ -187,10 +208,16 @@ public class TestReadCloverXml {
 					if (FILE.equals(cnode.getNodeName())) {
 						if (((Element) cnode).getAttribute(PATH).startsWith(RESPONSEPATH + project)) {
 							//							System.out.println(((Element) cnode).getAttribute("name"));
+							String javaname = cnode.getAttributes().getNamedItem("name").getNodeValue();
+							if (null != exclass && exclass.length > 0 && -1 != ArrayFunc.find(exclass, javaname)) {
+								// 排除掉的java不处理
+								// System.out.println(javaname);
+								continue;
+							}
 							javacount++;
 							FileFunc.writeStrToFile(RESULTPATH, ((Element) cnode).getAttribute(PATH), true, StrFunc.UTF8);
 							FileFunc.writeStrToFile(RESULTPATH, ",", true, StrFunc.UTF8);
-							getclover(cnode, CLASS, null, project, excludes);
+							getclover(cnode, CLASS, null, project, excludes, exclass);
 						} else {
 							// 如果不是指定工程下的不统计
 							break;
@@ -207,7 +234,7 @@ public class TestReadCloverXml {
 							}
 						}
 						if (!find) {
-							getclover(cnode, FILE, CLASSES, project, excludes);
+							getclover(cnode, FILE, CLASSES, project, excludes, exclass);
 						}
 					}
 				}
