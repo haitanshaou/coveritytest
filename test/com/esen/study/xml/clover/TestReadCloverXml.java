@@ -113,27 +113,12 @@ public class TestReadCloverXml {
 		} finally {
 			fos.close();
 		}
-		double es_clover = TestReadCloverXml.getCloverByPath("E:/clover/irpt/clover/irptweb-server-20150828/clover.xml",
-				"esenface", new String[] { "com.esen.platform.open", "com.esen.open" }, null);
-		System.out.println(es_clover);
-		double i_clover = TestReadCloverXml.getCloverByPath("E:/clover/irpt/clover/irptweb-server-20150828/clover.xml",
-				"irpt", new String[] { "com.esen.i.mobile" }, new String[] { "ActionWriterNavigator.java",
-						"ActionCalcExp.java", "ActionClientCreateGroup.java", "ActionClientListDoc.java",
-						"ActionClientShowTestTask.java", "ActionGetLoginInfo.java", "ActionTaskManager.java",
-						"ActionListTask.java", "GenerateTasksInfo.java", "ActionBbhGridData.java", "ActionBbhLocate.java",
-						"ActionHzForward.java", "ActionTrasPage.java", "ActionBIDatasourceMgr.java", "ActionGrpMgr.java",
-						"ActionGrpShow.java", "GroupForm.java", "QsForm.java", "WSReportCalculatorTest.java",
-						"Reports2ExcelFactory.java", "ExcelInfoImpl.java", "ReportToExcel.java", "Reports2ExcelImpl.java",
-						"ActionBatchChangeBbh.java", "AbstractFieldsMgr.java", "BatchChangeBbhBrowser.java",
-						"BatchChangeBbhExpCompilerHelper.java", "BatchChangeBbhFormatExpToSqlExp.java", "BatchChangeBbhInfo.java",
-						"BatchChangeBbhMgr.java", "BatchChangeBbhProgress.java", "ApprovalPassedAction.java",
-						"BackReApprovalAction.java", "DatasBackAction.java", "DefaultBackAction.java", "DefaultCommitAction.java",
-						"HierarchyBackAction.java", "DeleteBbh.java", "DataCopyService.java", "ActionDataFetch.java",
-						"DataFetcher.java", "DataFetcherFactory.java", "DataFetcherFactoryDefault.java", "DataFetcherDefault.java",
-						"DatasetReadQueryData.java", "TaskConfig.java", "TaskConfigQueryData.java", "TmpPatWriterUtil.java",
-						"TmpTxtWriterUtil.java", "SyncDataSvrRepairListener.java", "SyncResHashTree.java",
-						"SyncResHashTreeBuilder.java", "SyncResHashTreeNode.java", "ActionEIProgress.java", "AnaRpExpManager.java",
-						"ModifyTask.java", "ModifyTaskDbImpl.java", "ModifyTaskListener.java" });
+//		double es_clover = TestReadCloverXml.getCloverByPath("E:/clover/irpt/clover/irptweb-server-20150828/clover.xml",
+//				"esenface", new String[] { "com.esen.platform.open", "com.esen.open", "com.esen.platform.common.code",
+//						"com.esen.platform.script", "com.esen.platform.mobilesafe" }, new String[] { "ActionMobileOrg" });
+//		System.out.println(es_clover);
+		double i_clover = TestReadCloverXml.getCloverByPath("E:/clover/irpt/clover/irptweb-server-20150907/clover.xml",
+				"irpt", new String[] { "com.esen.i.mobile","com.esen.i.action.mobile" }, null);
 		System.out.println(i_clover);
 	}
 
@@ -207,17 +192,22 @@ public class TestReadCloverXml {
 				} else {
 					if (FILE.equals(cnode.getNodeName())) {
 						if (((Element) cnode).getAttribute(PATH).startsWith(RESPONSEPATH + project)) {
-							//							System.out.println(((Element) cnode).getAttribute("name"));
-							String javaname = cnode.getAttributes().getNamedItem("name").getNodeValue();
-							if (null != exclass && exclass.length > 0 && -1 != ArrayFunc.find(exclass, javaname)) {
-								// 排除掉的java不处理
-								// System.out.println(javaname);
-								continue;
+							String path = ((Element) cnode).getAttribute(PATH);
+							if (new File(path).exists()) {
+								// 文件在本地存在才计算，不存在的即被删除的废弃文件，不记录
+								String javaname = cnode.getAttributes().getNamedItem("name").getNodeValue();
+								if (null != exclass && exclass.length > 0 && -1 != ArrayFunc.find(exclass, javaname)) {
+									// 排除掉的java不处理
+									// System.out.println(javaname);
+									continue;
+								}
+								javacount++;
+								path = path.substring((RESPONSEPATH + project).length() + 1);
+								path = path.substring(path.indexOf('\\') + 1);
+								FileFunc.writeStrToFile(RESULTPATH, path, true, StrFunc.UTF8);
+								FileFunc.writeStrToFile(RESULTPATH, ",", true, StrFunc.UTF8);
+								getclover(cnode, CLASS, null, project, excludes, exclass);
 							}
-							javacount++;
-							FileFunc.writeStrToFile(RESULTPATH, ((Element) cnode).getAttribute(PATH), true, StrFunc.UTF8);
-							FileFunc.writeStrToFile(RESULTPATH, ",", true, StrFunc.UTF8);
-							getclover(cnode, CLASS, null, project, excludes, exclass);
 						} else {
 							// 如果不是指定工程下的不统计
 							break;

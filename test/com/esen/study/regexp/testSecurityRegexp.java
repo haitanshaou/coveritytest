@@ -9,6 +9,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.junit.Test;
 
+import com.esen.util.FileFunc;
 import com.esen.util.StrFunc;
 import com.esen.util.StringMap;
 import com.esen.util.security.SecurityFunc;
@@ -42,9 +43,39 @@ public class testSecurityRegexp {
 	}
 	
 	public static Pattern JSONSTRING = Pattern.compile(
-			"\\{(\"[^']+((\":\"[^']+\")|true|false|([+-]?[\\d\\.]+)),)*\"[^']+((\":\"[^']+\")|true|false|([+-]?[\\d\\.]+))\\}"
-					+ "|\\[(\\{(\"[^']+((\":\"[^']+\")|true|false|([+-]?[\\d\\.]+)),)*\"[^']+((\":\"[^']+\")|true|false|([+-]?[\\d\\.]+))\\})+\\]",
+//			"\\{(\"[^']+\":((\"[^']*\")|true|false|([+-]?[\\d\\.]+)),)*\"[^']+\":((\"[^']*\")|true|false|([+-]?[\\d\\.]+))\\}"
+//			+ "|\\[(\\{(\"[^']+\":((\"[^']*\")|true|false|([+-]?[\\d\\.]+)),)*\"[^']+\":((\"[^']*\")|true|false|([+-]?[\\d\\.]+))\\})+\\]",
+			
+			"\\[?(\\{(\"[^']+\":((\"[^']*\")|true|false|([+-]?[\\d\\.]+)),)*\"[^']+\":((\"[^']*\")|true|false|([+-]?[\\d\\.]+))\\})+\\]?",
 			Pattern.CASE_INSENSITIVE);
+
+	@Test
+	public void testjsonperformance() throws Exception {
+		JSONArray ja = new JSONArray();
+		for (int i = 0; i < 10000; i++) {
+			JSONObject j = new JSONObject();
+			j.put("fieldName", "fieldN\r\name");
+			j.put("fieldAlias", "ccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc");
+			j.put("dbType", "dbType");
+			j.put("factType", "factType");
+			j.put("dbLength", "1");
+			j.put("factLength", "2");
+			ja.put(j);
+			
+			JSONObject j2 = new JSONObject();
+			j2.put("d", "");
+			j2.put("c",1);
+			j2.put("a", false);
+			j2.put("b", -2.3);
+			j2.put("", 3);
+			ja.put(j2);
+		}
+//		ja.put(FileFunc.readFileToStr("C:/Users/Administrator/Desktop/i5.1_320000 安全报告-0729.txt", StrFunc.UTF8));
+		long start = System.currentTimeMillis();
+		checkParam(ja.toString()+".", JSONSTRING, false, false);
+		System.out.println(((long) System.currentTimeMillis()-start));
+		
+	}
 
 	@Test
 	public void testjsonreg() throws Exception {
@@ -58,14 +89,27 @@ public class testSecurityRegexp {
 		j.put("factLength", "2");
 		ja.put(j);
 		JSONObject j2 = new JSONObject();
+		j2.put("d", "");
 		j2.put("c",1);
 		j2.put("a", false);
 		j2.put("b", -2.3);
+		j2.put("", 3);
 		ja.put(j2);
 		System.out.println(ja.toString());
+		
+		new JSONArray(ja.toString());
 		checkParam(ja.toString(), JSONSTRING, false, false);
+		checkParam("[{\"B3\":\"\"}]", JSONSTRING, false, false);
+		checkParam(j2.toString(), JSONSTRING, false, false);
+		checkParam("[{\"\":\"\"}]", JSONSTRING, false, false);
 	}
 	
+	@Test
+	public void testParseJson() throws Exception {
+		String s = "json";
+		JSONObject jo = new JSONObject(s);
+	}
+
 	@Test
 	public void testclassname() throws Exception {
 		checkParam("aa.bb", CLASSNAME, false, false);
