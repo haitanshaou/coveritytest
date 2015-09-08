@@ -1,0 +1,8 @@
+com.esen.i.mobile
+com.esen.i.action.mobile
+com.esen.i.server.upgrade
+com.esen.balance.classic.util
+com.esen.balance.classic.algorithmic
+com.esen.i.script.commands
+com.esen.i.sync
+com.esen.i.service

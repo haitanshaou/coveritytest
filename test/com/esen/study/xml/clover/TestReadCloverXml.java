@@ -3,9 +3,12 @@ package com.esen.study.xml.clover;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import org.junit.Test;
 import org.w3c.dom.Document;
@@ -13,8 +16,8 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import com.esen.util.ArrayFunc;
 import com.esen.util.FileFunc;
+import com.esen.util.StmFunc;
 import com.esen.util.StrFunc;
 import com.esen.util.XmlFunc;
 
@@ -100,11 +103,28 @@ public class TestReadCloverXml {
 
 	private static final String RESULTPATH = "C:/Users/Administrator/Desktop/clover.csv";
 
+	private static Set<String> getExclude(String filename) throws Exception {
+		Set<String> exclude = new HashSet<String>();
+		InputStream is = TestReadCloverXml.class.getResourceAsStream(filename);
+		try {
+			String ex = StmFunc.readString(is, StrFunc.UTF8);
+			if (!StrFunc.isNull(ex)) {
+				String[] exs = ex.split("\r?\n");
+				for (int i = 0; i < exs.length; i++) {
+					exclude.add(exs[i]);
+				}
+			}
+		} finally {
+			is.close();
+		}
+		return exclude;
+	}
+
 	/**
 	 * 根据文件路径来判断是否是工程下的
 	 */
 	@Test
-	public void testGetCloverByPath() throws Exception {
+	public void testGetCloverByPath_i_es() throws Exception {
 		File file = new File(RESULTPATH);
 		FileOutputStream fos = new FileOutputStream(file);
 		try {
@@ -113,12 +133,26 @@ public class TestReadCloverXml {
 		} finally {
 			fos.close();
 		}
-//		double es_clover = TestReadCloverXml.getCloverByPath("E:/clover/irpt/clover/irptweb-server-20150828/clover.xml",
-//				"esenface", new String[] { "com.esen.platform.open", "com.esen.open", "com.esen.platform.common.code",
-//						"com.esen.platform.script", "com.esen.platform.mobilesafe" }, new String[] { "ActionMobileOrg" });
-//		System.out.println(es_clover);
+		double es_clover = TestReadCloverXml.getCloverByPath("E:/clover/irpt/clover/irptweb-server-20150828/clover.xml",
+				"esenface", getExclude("i_es_pacexclude.txt"), getExclude("i_es_classexclude.txt"));
+		System.out.println(es_clover);
+	}
+
+	/**
+	 * 根据文件路径来判断是否是工程下的
+	 */
+	@Test
+	public void testGetCloverByPath_i() throws Exception {
+		File file = new File(RESULTPATH);
+		FileOutputStream fos = new FileOutputStream(file);
+		try {
+			// csv的UTF-8格式需要BOM文件头，否则打开会乱码
+			fos.write(new byte[] { (byte) 0xEF, (byte) 0xBB, (byte) 0xBF });
+		} finally {
+			fos.close();
+		}
 		double i_clover = TestReadCloverXml.getCloverByPath("E:/clover/irpt/clover/irptweb-server-20150907/clover.xml",
-				"irpt", new String[] { "com.esen.i.mobile","com.esen.i.action.mobile" }, null);
+				"irpt", getExclude("i_pacexclude.txt"), getExclude("i_classexclude.txt"));
 		System.out.println(i_clover);
 	}
 
@@ -129,7 +163,7 @@ public class TestReadCloverXml {
 	 * @return 
 	 * @throws Exception 
 	 */
-	private static double getCloverByPath(String xmlpath, String project, String[] excludes, String[] exclass) throws Exception {
+	private static double getCloverByPath(String xmlpath, String project, Set<String> excludes, Set<String> exclass) throws Exception {
 		File file = new File(xmlpath);
 		FileInputStream fis = new FileInputStream(file);
 		try {
@@ -167,7 +201,7 @@ public class TestReadCloverXml {
 		return result;
 	}
 
-	private static void getclover(Node node, String name, String attribute, String project, String[] excludes, String[] exclass) {
+	private static void getclover(Node node, String name, String attribute, String project, Set<String> excludes, Set<String> exclass) {
 		NodeList nodelist = node.getChildNodes();
 		for (int i = 0; i < nodelist.getLength(); i++) {
 			Node cnode = nodelist.item(i);
@@ -196,7 +230,7 @@ public class TestReadCloverXml {
 							if (new File(path).exists()) {
 								// 文件在本地存在才计算，不存在的即被删除的废弃文件，不记录
 								String javaname = cnode.getAttributes().getNamedItem("name").getNodeValue();
-								if (null != exclass && exclass.length > 0 && -1 != ArrayFunc.find(exclass, javaname)) {
+								if (null != exclass && !exclass.isEmpty() && exclass.contains(javaname)) {
 									// 排除掉的java不处理
 									// System.out.println(javaname);
 									continue;
@@ -215,9 +249,10 @@ public class TestReadCloverXml {
 					} else if (PACKAGE.equals(cnode.getNodeName())) {
 						String packagename = cnode.getAttributes().getNamedItem("name").getNodeValue();
 						boolean find = false;
-						if (null != excludes) {
-							for (int j = 0; j < excludes.length; j++) {
-								if (packagename.startsWith(excludes[j])) {
+						if (null != excludes && !excludes.isEmpty()) {
+							for (Iterator<String> iterator = excludes.iterator(); iterator.hasNext();) {
+								String pname = iterator.next();
+								if (packagename.startsWith(pname)) {
 									find = true;
 									break;
 								}
