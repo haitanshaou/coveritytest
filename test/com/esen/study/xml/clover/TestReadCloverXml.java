@@ -103,6 +103,7 @@ public class TestReadCloverXml {
 
 	private static final String RESULTPATH = "C:/Users/Administrator/Desktop/clover.csv";
 
+	private static final String CLOVERXML = "E:/clover/irpt/clover/irptweb-server-20150910/clover.xml";
 	private static Set<String> getExclude(String filename) throws Exception {
 		Set<String> exclude = new HashSet<String>();
 		InputStream is = TestReadCloverXml.class.getResourceAsStream(filename);
@@ -133,8 +134,8 @@ public class TestReadCloverXml {
 		} finally {
 			fos.close();
 		}
-		double es_clover = TestReadCloverXml.getCloverByPath("E:/clover/irpt/clover/irptweb-server-20150828/clover.xml",
-				"esenface", getExclude("i_es_pacexclude.txt"), getExclude("i_es_classexclude.txt"));
+		double es_clover = TestReadCloverXml.getCloverByPath(CLOVERXML, "esenface", getExclude("i_es_pacexclude.txt"),
+				getExclude("i_es_classexclude.txt"));
 		System.out.println(es_clover);
 	}
 
@@ -151,8 +152,8 @@ public class TestReadCloverXml {
 		} finally {
 			fos.close();
 		}
-		double i_clover = TestReadCloverXml.getCloverByPath("E:/clover/irpt/clover/irptweb-server-20150907/clover.xml",
-				"irpt", getExclude("i_pacexclude.txt"), getExclude("i_classexclude.txt"));
+		double i_clover = TestReadCloverXml.getCloverByPath(CLOVERXML, "irpt", getExclude("i_pacexclude.txt"),
+				getExclude("i_classexclude.txt"));
 		System.out.println(i_clover);
 	}
 

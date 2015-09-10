@@ -20,3 +20,4 @@ com.esen.platform.common.oxm
 com.esen.platform.factory
 com.esen.platform.common.oxm.impl
 com.esen.platform.common.param
+com.esen.platform.action.sysmgr.systemmonitor
