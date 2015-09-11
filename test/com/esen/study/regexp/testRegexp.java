@@ -3,6 +3,9 @@ package com.esen.study.regexp;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -39,20 +42,6 @@ public class testRegexp {
 	}
 
 	@Test
-	public void testMatcherReplacement() {
-		Pattern pattern = Pattern.compile("正则表达式");
-		Matcher matcher = pattern.matcher("正则表达式 Hello World,正则表达式 Hello World ");
-		StringBuffer sbr = new StringBuffer();
-		while (matcher.find()) {
-			System.out.println(matcher.hasAnchoringBounds());
-			System.out.println(matcher.hasTransparentBounds());
-			matcher.appendReplacement(sbr, "Java");
-		}
-		matcher.appendTail(sbr);
-		System.out.println(sbr.toString());
-	}
-
-	@Test
 	public void testMatcherReplace() {
 		Pattern pattern = Pattern.compile("<ac:image(.*)>");
 		String s = "XacXX<ac:image ac:height=\"117\" ac:width=\"585\">GacGG<ac:image ac:align=\"center\" ac:width=\"585\">";
@@ -67,6 +56,20 @@ public class testRegexp {
 		sb.append(s.substring(start));
 		System.out.println(sb.toString());
 		//		System.out.println("acXXX<ac:image ac:height=\"117\" ac:width=\"585\">GGacG".replaceAll("", ""));
+	}
+
+	@Test
+	public void testMatcherReplacement() {
+		Pattern pattern = Pattern.compile("正则表达式");
+		Matcher matcher = pattern.matcher("正则表达式 Hello World,正则表达式 Hello World ");
+		StringBuffer sbr = new StringBuffer();
+		while (matcher.find()) {
+			System.out.println(matcher.hasAnchoringBounds());
+			System.out.println(matcher.hasTransparentBounds());
+			matcher.appendReplacement(sbr, "Java");
+		}
+		matcher.appendTail(sbr);
+		System.out.println(sbr.toString());
 	}
 
 	@Test
@@ -252,5 +255,83 @@ public class testRegexp {
 
 		String s2 = "890372044";
 		Assert.assertTrue(s2.matches(reg));
+	}
+	
+	/**
+	 * 富文本正则，判断报表模板
+	 */
+	@Test
+	public void testRichText() {
+//		String split = "\\[(\\{(\"t\":.*,\"stl\":.*|\"sub\":.*,\"stl\":.*|\"sup\":.*,\"stl\":.*|\"newline\":true)\\},)*\\{(\"t\":.*,\"stl\":.*|\"sub\":.*,\"stl\":.*|\"sup\":.*,\"stl\":.*|\"newline\":true)\\}\\]";
+//		System.out.println("[{\"t\":\"sdfsdf;\",\"stl\":{\"cl\":\"#000000\",\"sz\":12,\"bkcl\":\"transparent\",\"fn\":\"微软雅黑\"}},{\"newline\":true},{\"sub\":\"aa\",\"stl\":\"dd\"}]".matches(split));
+		System.out.println(isRichText_New("[{\"t\":\"sdfsdf;\",\"stl\":{\"fn\":\"微软雅黑\"}},{\"newline\":true}]"));
+		
+	}
+
+	public static boolean isRichText(Object text) {
+		String split = "\\[(\\{(\"t\":.*,\"stl\":.*|\"sub\":.*,\"stl\":.*|\"sup\":.*,\"stl\":.*|\"newline\":true)\\},)*\\{(\"t\":.*,\"stl\":.*|\"sub\":.*,\"stl\":.*|\"sup\":.*,\"stl\":.*|\"newline\":true)\\}\\]";
+		if (text instanceof String) {
+			return ((String) text).matches(split);
+		} else if (text instanceof JSONArray) {
+			String str = text.toString();
+			return str.matches(split);
+		}
+		return false;
+	}
+	
+	/**
+	 * JSONArray 由1个或多个JSONObject组成
+	 * JSONObject的name可能是stl与t或sub或sup组成，或为newline，如果是newline，值只能是true
+	 */
+	public static boolean isRichText_New(Object text) {
+		JSONArray ja = null;
+		if (text instanceof String) {
+			try {
+				ja = new JSONArray((String)text);
+			} catch (JSONException e) {
+				return false;
+			}
+		} else if (text instanceof JSONArray) {
+			ja = (JSONArray) text;
+		}
+
+		if (null == ja) {
+			return false;
+		}
+		JSONObject jo = null;
+		for (int i = 0; i < ja.length(); i++) {
+			try {
+				jo = ja.getJSONObject(i);
+			} catch (JSONException e) {
+				return false;
+			}
+			if (1 == jo.length()) {
+				if (!"{\"newline\":true}".equals(jo.toString())) {
+					return false;
+				}
+			} else if (2 == jo.length()) {
+				JSONArray names = jo.names();
+				int index = 0;
+				try {
+					if ("stl".equals(names.get(0).toString())) {
+						index = 1;
+					} else if ("stl".equals(names.get(1).toString())) {
+						index = 0;
+					} else {
+						return false;
+					}
+
+					if (!names.get(index).equals("t") && !names.get(index).equals("sub") && !names.get(index).equals("sup")) {
+						return false;
+					}
+				} catch (JSONException e) {
+					return false;
+				}
+			} else {
+				return false;
+			}
+		}
+
+		return true;
 	}
 }
