@@ -1,8 +1,15 @@
+#移动相关
 com.esen.i.mobile
 com.esen.i.action.mobile
+#升级相关
 com.esen.i.server.upgrade
+#舍位平衡工具类及计算相关
 com.esen.balance.classic.util
 com.esen.balance.classic.algorithmic
+#脚本工具类
 com.esen.i.script.commands
+#工具类
+com.esen.i.util
+#集群
 com.esen.i.sync
 com.esen.i.service

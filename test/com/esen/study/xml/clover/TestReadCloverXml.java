@@ -97,13 +97,32 @@ public class TestReadCloverXml {
 	 */
 	private static final String PATH = "path";
 
+	/**
+	 * 记录的覆盖率信息
+	 */
 	private static List<CloverBean> list = new ArrayList<CloverBean>();
 
+	/**
+	 * java类计数
+	 */
 	private static int javacount = 0;
 
+	/**
+	 * 覆盖率结果记录文件
+	 */
 	private static final String RESULTPATH = "C:/Users/Administrator/Desktop/clover.csv";
 
+	/**
+	 * 覆盖率数据文件
+	 */
 	private static final String CLOVERXML = "E:/clover/irpt/clover/irptweb-server-20150910/clover.xml";
+
+	/**
+	 * 根据文件名，读取文件内记录的排除的包或类名
+	 * @param filename 排除的文件名
+	 * @return
+	 * @throws Exception
+	 */
 	private static Set<String> getExclude(String filename) throws Exception {
 		Set<String> exclude = new HashSet<String>();
 		InputStream is = TestReadCloverXml.class.getResourceAsStream(filename);
@@ -112,7 +131,9 @@ public class TestReadCloverXml {
 			if (!StrFunc.isNull(ex)) {
 				String[] exs = ex.split("\r?\n");
 				for (int i = 0; i < exs.length; i++) {
-					exclude.add(exs[i]);
+					if (!exs[i].startsWith("#")) {
+						exclude.add(exs[i]);
+					}
 				}
 			}
 		} finally {
@@ -270,10 +291,19 @@ public class TestReadCloverXml {
 }
 
 class CloverBean {
+	/**
+	 * 覆盖分支数
+	 */
 	private int coveredelements = 0;
 
+	/**
+	 * 总分支数
+	 */
 	private int elements = 0;
 	
+	/**
+	 * java类名
+	 */
 	private String javaname;
 
 	public CloverBean(String javaname, int coveredelements, int elements) {

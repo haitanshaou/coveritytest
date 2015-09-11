@@ -1,7 +1,10 @@
+#没找到调用的地方，之前删除过但出现编译错误，故用排除
 BookMarkToolListImpl.java
 BookMarkToolTreeImpl.java
+#计算工具类
 FormatExpToSqlExp.java
 AbstractExpToSql.java
+#工具类
 TaskDb.java
 ReportDb.java
 DbFuncs.java
@@ -15,8 +18,10 @@ ToolkitEventListenerWrapper.java
 JspFunc.java
 SecurityFunc.java
 IrptUtils.java
+#I发布分析表到BI，此为接口，无实现类，不可测
 DsnI2biFactory.java
 ActionPublishAnalysis.java
+#有些方法现在没有使用 但是在插件中有这个请求
 ActionQueryServerInfo.java
 ActionClientDownloadUserlist.java
 ActionSelectRelateInfo.java
@@ -25,10 +30,11 @@ ActionTaskDrafts.java
 ActionClientUploadData.java
 UploadSubmitedData2.java
 ActionDownloadStreamData.java
+#视图计算的类，很多方法定义，并未实现
 ViewReportCalcMgrImpl.java
-BookMarkToolListImpl.java
-BookMarkToolTreeImpl.java
+#目前不支持从报表户列表方式定义树形结构
 BtsBbhlist.java
+#是新旧风格数据库型代码组的 实现类，目前i5.1服务器上对这些没有太多应用，以后可能会用到。
 DbCodeValues.java
 DbCodeValue.java
 CodeOldDbFmtSqlBrowser.java
