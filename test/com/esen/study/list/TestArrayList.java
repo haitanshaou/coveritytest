@@ -28,6 +28,19 @@ public class TestArrayList {
 		}
 	}
 
+	@Test
+	public void testSort() throws Exception {
+		List<User> a = new ArrayList<User>();
+		a.add(new User("bb", 1));
+		a.add(new User("a", 100));
+		a.add(new User("c", 50));
+		Collections.sort(a);
+		for (Iterator<User> iterator = a.iterator(); iterator.hasNext();) {
+			User o = iterator.next();
+			System.out.println(o.toString());
+		}
+	}
+
 	/**
 	 * a是原list，b是变化后的，要找到新增和删除的内容
 	 */
@@ -61,4 +74,27 @@ public class TestArrayList {
 			System.out.print(add);
 		}
 	}
+}
+
+class User implements Comparable<User> {
+	private String name;
+
+	private int age;
+
+	public User(String name, int age) {
+		super();
+		this.name = name;
+		this.age = age;
+	}
+
+	@Override
+	public String toString() {
+		return "User [name=" + name + ", age=" + age + "]";
+	}
+
+	public int compareTo(User o) {
+		// TODO Auto-generated method stub
+		return this.age - o.age;
+	}
+
 }
