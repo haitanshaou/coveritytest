@@ -114,6 +114,12 @@ public class testSecurityRegexp {
 	public void testclassname() throws Exception {
 		checkParam("aa.bb", CLASSNAME, false, false);
 	}
+	
+	@Test
+	public void testtaskid() throws Exception {
+		checkParam("d3A.CC{-}", IRPT_TASKID, false, false);
+	}
+
 	@Test
 	public void testSQL() throws Exception {
 		String value = "Select * Join AAA";
@@ -174,8 +180,12 @@ public class testSecurityRegexp {
 
 	/**
 	 * 匹配任务ID的正则表达式：{8位大写字母或数字-4位大写字母或数字-4位大写字母或数字-4位大写字母或数字-12位大写字母或数字}.32位小写字母或者数字
+	 * edit by chenlan 20150914
+	 * 修改匹配任务ID的正则表达式：允许中划线字母数字点号大括号
+	 * IRPT-20344 i@Report5.1 工作流，发起流程，办理任务提示报错
+	 * 任务id还有guid.guid的情况，故做修改，放宽检查
 	 */
-	public static final Pattern IRPT_TASKID = Pattern.compile("\\{[0-9A-Z]{8}(-[0-9A-Z]{4}){3}-[0-9A-Z]{12}\\}(.[0-9a-z]{32})?");
+	public static final Pattern IRPT_TASKID = Pattern.compile("[-.\\{\\}A-Za-z0-9]*");
 
 	/**
 	 * 20121224 by kangx 修改XSS匹配规则<br>
