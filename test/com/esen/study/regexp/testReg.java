@@ -8,6 +8,12 @@ import org.junit.Assert;
 import org.junit.Test;
 
 public class testReg {
+	
+	@Test
+	public void transtime() {
+		System.out.println("20150909".replaceAll("(\\d{4})(\\d{2})(\\d{2})", "$1/$2/$3"));
+	}
+
 	@Test
 	public void aboutESC() {
 		System.out.println("单引号'转义'".replaceAll("'", "\\\\'"));

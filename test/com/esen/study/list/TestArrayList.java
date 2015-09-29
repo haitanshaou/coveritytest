@@ -41,6 +41,22 @@ public class TestArrayList {
 		}
 	}
 
+	@Test
+	public void testClone() throws Exception {
+		ArrayList<User> a = new ArrayList<User>();
+		a.add(new User("bb", 1));
+		a.add(new User("a", 100));
+		a.add(new User("c", 50));
+		@SuppressWarnings("unchecked")
+		ArrayList<User> b = (ArrayList<User>) a.clone();
+		b.get(1).setName("change");
+		
+		for (Iterator<User> iterator = a.iterator(); iterator.hasNext();) {
+			User o = iterator.next();
+			System.out.println(o.toString());
+		}
+	}
+
 	/**
 	 * a是原list，b是变化后的，要找到新增和删除的内容
 	 */
@@ -84,6 +100,22 @@ class User implements Comparable<User> {
 	public User(String name, int age) {
 		super();
 		this.name = name;
+		this.age = age;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public int getAge() {
+		return age;
+	}
+
+	public void setAge(int age) {
 		this.age = age;
 	}
 
