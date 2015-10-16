@@ -68,7 +68,7 @@
 		</dependency>
 
 	<!-- crowd部分，单点登录处理需要用到的包 -->
-		<dependency>
+		<!--dependency>
 			<groupId>com.esen.4am</groupId>
 			<artifactId>crowd-core</artifactId>
 			<version>2.4.10</version>
@@ -127,6 +127,12 @@
 			<groupId>com.esen.4am</groupId>
 			<artifactId>atlassian-core</artifactId>
 			<version>4.5.10</version>
+		</dependency-->
+
+		<dependency>
+			<groupId>net.sf.delicious-java</groupId>
+			<artifactId>delicious</artifactId>
+			<version>1.13</version>
 		</dependency>
 
 		<!-- Struts MVC框架 -->
