@@ -28,7 +28,7 @@ public class testSecurityRegexp {
 	
 	@Test
 	public void decode() throws Exception {
-		String value = "%20%22";
+		String value = "%27+%2B+ltrim%28%27%27%29+%2B+%27320000";
 		String decode = URLDecoder.decode(value, StrFunc.UTF8);
 		System.out.println(decode);
 	}
