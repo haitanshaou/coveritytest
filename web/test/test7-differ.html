@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=utf-8">
+<title>test7-differ</title>
+<link rel="stylesheet" href="qunit-1.11.0.css">
+<script src="qunit-1.11.0.js"></script>
+<script src="jquery.js"></script>
+<script src="jquery-1.9.1.js"></script>
+<script src="jquery-ui.js"></script>
+<script>
+	test("test1", function() {
+		var actual = {
+			a : 1
+		};
+		notEqual(actual, {
+			a : 1
+		}, "same content, but different object, not handled by equals");
+		notDeepEqual(actual, {
+			a : "1"
+		}, "expected value is a string, actual a number");
+		deepEqual(actual, {
+			a : 1
+		}, "same content, but different object");
+		notStrictEqual(actual, {
+			a : 1
+		}, "same content, but different object");
+	});
+
+	test("test2", function() {
+		var actual = 0;
+		equal(actual, false,
+				"as 0 and false are the same when compared with ==");
+		notStrictEqual(actual, false, "as 0 is a Number type, false Boolean");
+	});
+</script>
+</script>
+</head>
+<body>
+	<div id="qunit-testrunner-toolbar"></div>
+	<h2 id="qunit-userAgent"></h2>
+	<ol id="qunit-tests"></ol>
+	<div id="qunit-fixture">测试标记</div>
+</body>
+</html>

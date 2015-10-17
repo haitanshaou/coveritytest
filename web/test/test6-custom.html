@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=utf-8">
+<title>test6-custom</title>
+<link rel="stylesheet" href="qunit-1.11.0.css">
+<script src="qunit-1.11.0.js"></script>
+<script src="jquery.js"></script>
+<script src="jquery-1.9.1.js"></script>
+<script src="jquery-ui.js"></script>
+<script>
+	/**
+		检测选择器selector对应的元素attributes中的属性以及子元素是否在modifier()这个方法执行之后发生了改变。
+	 */
+	function domEqual(selector, modifier, message) {
+		var attributes = [ "class", "role", "id", "tabIndex",
+				"aria-activedescendant" ];
+
+		function extract(value) {
+			var result = {};
+			result.nodeName = value[0].nodeName;
+			$.each(attributes, function(index, attr) {
+				result[attr] = value.attr(attr);
+			});
+			result.children = [];
+			var children = value.children();
+			if (children.length) {
+				children.each(function() {
+					result.children.push(extract($(this)));
+				});
+			} else {
+				result.text = value.text();
+			}
+			return result;
+		}
+		var expected = extract($(selector));
+		modifier($(selector));
+
+		var actual = extract($(selector));
+		QUnit.push(QUnit.equiv(actual, expected), actual, expected, message);
+	}
+
+	/*
+		貌似modifier执行后，Autocomplete插件将文本框的className改成了空字符串，导致文本框前后变化不相等了，
+		于是检测结果为failed！
+		如果默认HTML是<input id="autocomplete" class="">，则结果是passed！
+	*/
+	test("destroy", function() {
+		domEqual("#autocomplete", function() {
+			$("#autocomplete").autocomplete().autocomplete("destroy");
+		});
+	})
+</script>
+</script>
+</head>
+<body>
+	<h1 id="qunit-header">QUnit Hello World</h1>
+	<h2 id="qunit-banner"></h2>
+	<ol id="qunit-tests"></ol>
+	<p>这是id为autocomplete的文本框：<input id="autocomplete"></p>
+</body>
+</html>

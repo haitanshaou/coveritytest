@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=utf-8">
+<title>test5-raises</title>
+<link rel="stylesheet" href="qunit-1.11.0.css">
+<script src="qunit-1.11.0.js"></script>
+<script src="jquery.js"></script>
+<script>
+	/**
+		示例显示了raises如何通过传递预期的构造函数引用作为第二个参数来检测构造函数抛出的异常。
+	 */
+	test("raises", function() {
+		function CustomError() {
+		}
+		raises(function() {
+			throw new CustomError();
+		}, CustomError, "must throw error to pass");
+	});
+</script>
+</script>
+</head>
+<body>
+	<h1 id="qunit-header">QUnit Hello World</h1>
+	<h2 id="qunit-banner"></h2>
+	<ol id="qunit-tests"></ol>
+</body>
+</html>

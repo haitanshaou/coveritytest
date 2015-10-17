@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=utf-8">
+<title>test4-asyncTest</title>
+<link rel="stylesheet" href="qunit-1.11.0.css">
+<script src="qunit-1.11.0.js"></script>
+<script src="jquery.js"></script>
+<script>
+	/**
+		因为$.getJSON是异步的，我们调用stop(), 然后运行代码，
+		再在callback结束的时候调用start(), 告诉QUnit继续运行。
+		运行异步代码的时候，如果没有使用stop()，会导致本意是其他测试的任意结果，如passed或failed.
+	*/
+	test("async", function() {
+		stop();
+		$.getJSON("test4.json", function(result) {
+			/**
+				deepEqual 用来检测结果是否完全是我们所期望的
+				（比方说var a={}, b ={};
+				a==b → false，但是，使用deepEqual，a==b为true）。
+			*/
+			deepEqual(result, {
+				status : "ok"
+			});
+			start();
+		});
+	});
+	/**
+		如果我们使用asyncTest()代替test(), 我们就可以把stop()省掉。于是，我们一眼就可以看出这是个异步测试。
+	*/
+	asyncTest("async2", function() {
+		$.getJSON("test4.json", function(result) {
+			deepEqual(result, {
+				status : "ok"
+			});
+			start();
+		});
+	});
+	/**
+		这里，asyncTest()中，expect被调用，参数为1, 相对于告诉QUnit这里的测试应该只有一次判定。
+	*/
+	asyncTest("async3", function() {
+		expect(1);
+		$.getJSON("test4.json", function(result) {
+			deepEqual(result, {
+				status : "ok"
+			});
+			start();
+		});
+	});
+	/**
+		expect()貌似有个取巧的设置方法，就是给test()或asyncTest()的第二个参数传递一个数字，
+		例如，上面的代码可以写成：
+	*/
+	asyncTest("async4", 1, function() {
+		$.getJSON("test4.json", function(result) {
+			deepEqual(result, {
+				status : "ok"
+			});
+			start();
+		});
+	});
+	/*
+		如果测试的结束点多个-多个回调的顺序随机-我们可以使用QUnit内置信号。
+		调用stop()与之后调用的start()同数目，则Qunit会继续运行直到stop()增加的计数被start()减少回0。
+	*/
+	test("async semaphore", function() {
+		stop();
+		stop();
+		$.getJSON("test4.json", function(result) {
+			equal(result.status, "ok");
+			start();
+		});
+		$.getJSON("test4.json", function(result) {
+			equal(result.status, "ok");
+			start();
+		});
+	});
+	/**
+		equal和deepEqual已经在前面登台亮相了。
+		实际上，QUnit提供了远不止这几个判断，
+		比方说strict, 使用和eauql一样，除了使用的是JavaScript中的"==="严格对比操作符。
+		当对比不同类型值的时候，例如数值和字符串比较，eauql就有用武之地了，这样你的测试就不会死在0等于"0"上。
+		跟equal, deepEqual和strictEqual相反，这里还有notEqual, notDeepEqual, notStrictEqual。
+	*/
+</script>
+</script>
+</head>
+<body>
+	<h1 id="qunit-header">QUnit Hello World</h1>
+	<h2 id="qunit-banner"></h2>
+	<ol id="qunit-tests"></ol>
+</body>
+</html>
