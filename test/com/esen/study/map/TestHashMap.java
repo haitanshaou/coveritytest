@@ -2,6 +2,7 @@ package com.esen.study.map;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 import org.junit.Test;
 
@@ -20,6 +21,30 @@ import org.junit.Test;
  * 				(如果2个不同的对象,hashCode的值是一样的,能分别get的到对应的value)
  */
 public class TestHashMap {
+	private static final HashMap<String, String> threadsafemap = new HashMap<String, String>();
+
+	/**
+	 * HashTable容器使用synchronized来保证线程安全，但在线程竞争激烈的情况下HashTable的效率非常低下。
+	 * 因为当一个线程访问HashTable的同步方法时，其他线程访问HashTable的同步方法时，可能会进入阻塞或轮询状态。
+	 * 如线程1使用put进行添加元素，线程2不但不能使用put方法添加元素，并且也不能使用get方法来获取元素，所以竞争越激烈效率越低。
+	 */
+	@Test
+	public void testThreadSafe() throws InterruptedException {
+		Thread t = new Thread(new Runnable() {
+			public void run() {
+				for (int i = 0; i < 1000; i++) {
+					new Thread(new Runnable() {
+						public void run() {
+							threadsafemap.put(UUID.randomUUID().toString(), "");
+						}
+					}, "ftf" + i).start();
+				}
+			}
+		}, "ftf");
+		t.start();
+		t.join();
+		System.out.println(threadsafemap);
+	}
 
 	/**
 	 * 测试：
