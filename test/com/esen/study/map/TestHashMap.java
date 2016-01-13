@@ -1,7 +1,9 @@
 package com.esen.study.map;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.UUID;
 
 import org.junit.Test;
@@ -44,6 +46,20 @@ public class TestHashMap {
 		t.start();
 		t.join();
 		System.out.println(threadsafemap);
+	}
+
+	@Test
+	public void testPut() throws Exception {
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("a", "bbb");
+		map.put("a", "ccc");
+		map.put("a", "aaa");
+		
+		Iterator<Entry<String, String>> iterator = map.entrySet().iterator();
+		while (iterator.hasNext()) {
+			Entry<String, String> entry = iterator.next();
+			System.out.println(entry.getValue());
+		}
 	}
 
 	/**

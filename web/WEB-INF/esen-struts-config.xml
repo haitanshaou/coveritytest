@@ -9,6 +9,8 @@
 	</form-beans>
 	<global-exceptions />
 	<action-mappings>
+		<action path="/upload" type="com.esen.action.upload.UploadAction">
+		</action>
 	</action-mappings>
 	<message-resources parameter="resourceBundle" />
 </struts-config>
