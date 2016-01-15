@@ -6,6 +6,7 @@
 	</head>
 	<body>
 	<script language=JavaScript>
+	var isChrome = /(Chrome)/g.test(window.navigator.userAgent);
 	dCol = '000000'; //date colour.
 	fCol = '000000'; //face colour.
 	sCol = '000000'; //seconds colour.
@@ -94,7 +95,7 @@
 			document.write('<layer name=nsHours' + i + ' top=0 left=0 width=15 height=15><font face=Arial size=3 color=' + hCol + '><center><b>' + H[i] + '</b></center></font></layer>');
 		}
 	}
-	if (ie) {
+	if (ie || isChrome) {
 		document.write('<div id="Od" style="position:absolute;top:0px;left:0px"><div style="position:relative">');
 		for (i = 0; i < D.length; i++) {
 			document.write('<div id="ieDate" style="position:absolute;top:0px;left:0;height:' + a + ';width:' + a + ';text-align:center">' + props2 + D[i] + '</B></font></div>');
@@ -135,7 +136,7 @@
 		min = -1.57 + Math.PI * mins / 30;
 		hr = time.getHours();
 		hrs = -1.575 + Math.PI * hr / 6 + Math.PI * parseInt(time.getMinutes()) / 360;
-		if (ie) {
+		if (ie || isChrome) {
 			Od.style.top = window.document.body.scrollTop;
 			Of.style.top = window.document.body.scrollTop;
 			Oh.style.top = window.document.body.scrollTop;
@@ -186,7 +187,7 @@
 		ClockAndAssign();
 		setTimeout('Delay()', 20);
 	}
-	if (ns || ie) {
+	if (ns || ie || isChrome) {
 		window.onload = Delay;
 	}
 	</script>
