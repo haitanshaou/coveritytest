@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=utf-8">
+<title>prototype</title>
+<link rel="stylesheet" href="../third/qunit-1.11.0.css">
+<script src="../third/qunit-1.11.0.js"></script>
+<script>
+	function ClassA() {
+		this.a = 1;
+	}
+	function ClassB() {
+		this.b = 5;
+	}
+	ClassB.prototype = new ClassA();
+	var objB = new ClassB();
+	
+	test("ClassB prototype ClassA 1", function() {
+		ok("a" in objB, "a in B");
+	});
+	test("ClassB prototype ClassA 2", function() {
+		ok("b" in objB, "b in B");
+	});
+	test("ClassB prototype ClassA 3", function() {
+		ok(!objB.hasOwnProperty("a"), "a not ownProperty B");
+	});
+	test("ClassB prototype ClassA 4", function() {
+		ok(objB.hasOwnProperty("b"), "b ownProperty B");
+	});
+</script>
+</head>
+<body>
+	<h1 id="qunit-header">test prototype</h1>
+	<h2 id="qunit-banner"></h2>
+	<ol id="qunit-tests"></ol>
+</body>
+</html>
