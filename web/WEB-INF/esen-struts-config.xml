@@ -12,6 +12,10 @@
 		<action path="/upload" type="com.esen.action.upload.UploadAction">
 		</action>
 	</action-mappings>
+	<action-mappings>
+		<action path="/clovertest" type="com.esen.clover.CloverTestAction">
+		</action>
+	</action-mappings>
 	<message-resources parameter="resourceBundle" />
 </struts-config>
 

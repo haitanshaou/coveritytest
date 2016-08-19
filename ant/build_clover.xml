@@ -5,7 +5,7 @@
 	<property name="ant.libhome" location="F:/TDDOWNLOAD/apache-ant-1.7.1/lib" />
 	<property name="clover.jar" location="${ant.libhome}/clover.jar" />
 	<taskdef resource="cloverlib.xml" classpath="${clover.jar}" />
-	<taskdef resource="cloverjunitlib.xml" classpath="${clover.jar}" />
+	<!--taskdef resource="cloverjunitlib.xml" classpath="${clover.jar}" /-->
 	<property name="clover.ordering" value="failfast" />
 
 	<!-- @ordering: optional; values "failfast", "orginal" or "random"; default:
@@ -84,7 +84,7 @@
 			<fileset dir="${main.home}/src" excludes="**/*.java,**/*.class" />
 		</copy>
 
-		<javac destdir="${project.classes}" encoding="UTF-8" debug="true" debuglevel="lines,vars,source" target="1.5" source="1.5" nowarn="on" listfiles="true" deprecation="false">
+		<javac destdir="${project.classes}" encoding="UTF-8" debug="true" debuglevel="lines,vars,source" target="1.6" source="1.6" nowarn="on" listfiles="true" deprecation="false">
 			<src path="${main.home}/src" />
 			<classpath refid="build.lib" />
 		</javac>
