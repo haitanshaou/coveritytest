@@ -16,7 +16,7 @@
 	<clover-env />
 
 	<target name="merge">
-		<clover-merge initString="${basedir}\.clover\new_clover4_1_1.db">
+		<clover-merge initString="${basedir}\.clover\clover4_1_1.db">
 			<cloverDb initString="${basedir}\1\.clover\clover4_1_1.db" />
 			<cloverDb initString="${basedir}\2\.clover\clover4_1_1.db" span="30 mins" />
 		</clover-merge>
