@@ -42,6 +42,9 @@ import com.esen.util.XmlFunc;
  * 
  * 计算方式：<br/>
  * cloverelements/elements
+ * 
+ * =HYPERLINK("http://172.21.200.12:8083/clover201608191830/web-server/"&LEFT(RIGHT(B2,LEN(B2)-4),LEN(B2)-8)&"html",B2)
+ * 
  * @author chenlan
  * @since Aug 19, 2016
  * 加了指定目录和指定类
@@ -359,6 +362,8 @@ public class TestCloverXml {
 										}
 									}
 								}
+							} else {
+								needCount = true;
 							}
 							if (needCount) {
 								javacount++;
