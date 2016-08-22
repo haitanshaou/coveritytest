@@ -10,6 +10,26 @@ import org.junit.Test;
 public class testReg {
 	
 	@Test
+	public void testgetat() throws Exception {
+		String msg = "xui/xxx/third/aaa";
+		Matcher m = Pattern.compile("/third/").matcher(msg);
+		if(m.find()) {
+			System.out.println(m.group());
+		}
+		
+		System.out.println(msg.contains("/third/"));
+	}
+
+	@Test
+	public void test1() {
+		String msg = "Esensoft PetaBase";
+		String key = ";P";
+		String value = "ycttitter";
+		msg = msg.replaceAll(key, value);
+		System.out.println(msg);
+	}
+
+	@Test
 	public void transtime() {
 		System.out.println("20150909".replaceAll("(\\d{4})(\\d{2})(\\d{2})", "$1/$2/$3"));
 	}
@@ -81,5 +101,13 @@ public class testReg {
 		} catch (PatternSyntaxException ex) {
 			System.out.println("进到这里表示正则表达式写的有问题哦!");
 		}
+	}
+
+	/**
+	 * 名称只能字母开头，字母数字下划线
+	 */
+	@Test
+	public void testCheckName() {
+		Assert.assertTrue("tableName1_".matches("[a-zA-Z][\\w_]*"));
 	}
 }

@@ -1,5 +1,6 @@
 package com.esen.plan.regex;
 
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.junit.Assert;
@@ -87,5 +88,44 @@ public class TestJavaRegex {
 	
 	/*
 	 * 分组（jdk1.7及以上）
+	 */
+	
+	/*
+	 * 替换指定位置的字符串
+	 * 如ababa 指定替换第2个a
+	 * http://bbs.csdn.net/topics/390848935
+	 * 
+	 * 
+	      string Replace(string str, string pattern, string newstr, int index)
+	      {
+	          int leadListIndex = 0;
+	          return Regex.Replace(str, Regex.Escape(pattern), m => ++leadListIndex == index ? newstr : m.Value);
+	      }
+
+
+	   public string GetRePlaceStr(string str, string pattern, string newstr, int index=1) 
+	      {
+	          Regex reg = new Regex(pattern);
+	          //查询匹配数量
+	          var t = reg.Matches(str);
+	          return reg.Replace(str, newstr,1,t[index-1].Index);
+	      }
+		replace和replaceFirst区别
+	 * 
+	 */
+
+	/*
+	 * 正则表达式--获取匹配和非获取匹配
+	 * http://yimi128.iteye.com/blog/1436659
+	 */
+	
+	/*
+	 * http://www.aspku.com/kaifa/zhengze/43240.html
+	 * http://su1216.iteye.com/blog/1611655
+	 */
+
+	/*
+	 * (?(?=regex)then|else) 
+	 * 正则中的条件表达式，java和JavaScript目前都不支持
 	 */
 }

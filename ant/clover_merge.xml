@@ -16,10 +16,12 @@
 	<clover-env />
 
 	<target name="merge">
+		<!-- db文件的合并 -->
 		<clover-merge initString="${basedir}\.clover\clover4_1_1.db">
 			<cloverDb initString="${basedir}\1\.clover\clover4_1_1.db" />
 			<cloverDb initString="${basedir}\2\.clover\clover4_1_1.db" span="30 mins" />
 		</clover-merge>
+		<!-- 覆盖率文件直接拷贝 -->
 		<copy todir="${basedir}/.clover/">
 			<fileset dir="${basedir}/1/.clover">
 				<exclude name="clover4_1_1.db" />
