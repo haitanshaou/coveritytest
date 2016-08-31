@@ -187,7 +187,7 @@ public class TestCloverXml {
 			fos.close();
 		}
 		double clover = TestCloverXml.getCloverByPath("D:/clover/datafactory/clover/web-server/clover.xml", "datafactory",
-				null, null, null, null);
+				null, getExclude("df_classexclude.txt"), null, null);
 		System.out.println(clover);
 	}
 
@@ -208,7 +208,7 @@ public class TestCloverXml {
 		appointpath.add("com/esen/platform/action/dsmodel");
 		appointpath.add("com/esen/platform/dsmodel");
 		double clover = TestCloverXml.getCloverByPath("D:/clover/datafactory/clover/web-server/clover.xml", "esenface",
-				null, null, appointpath, getPath("df_es_appointclass_2.1.1.txt"));
+				null, getExclude("df_es_classexclude.txt"), appointpath, getPath("df_es_appointclass_2.1.1.txt"));
 		System.out.println(clover);
 	}
 
@@ -331,12 +331,14 @@ public class TestCloverXml {
 							//							if (new File(path).exists()) {
 							// 文件在本地存在才计算，不存在的即被删除的废弃文件，不记录
 							String javaname = cnode.getAttributes().getNamedItem("name").getNodeValue();
-							if (null != exclass && !exclass.isEmpty() && exclass.containsKey(javaname)) {
-								// 排除掉的java不处理
-								// System.out.println(javaname);
-								cb.setIsexclude(true);
-								cb.setExccontent(javaname);
-								cb.setDescription(exclass.get(javaname));
+							if (null != exclass && !exclass.isEmpty() && (exclass.containsKey(javaname) 
+									|| exclass.containsKey(StrFunc.ensureNotStartWith(path, RESPONSEPATH + project + "/")))) {
+								continue;
+//								// 排除掉的java不处理
+//								// System.out.println(javaname);
+//								cb.setIsexclude(true);
+//								cb.setExccontent(javaname);
+//								cb.setDescription(exclass.get(javaname));
 							}
 							boolean needCount = false;
 							if ((null != appoint && !appoint.isEmpty()) || (null != appointclass && !appointclass.isEmpty())) {
