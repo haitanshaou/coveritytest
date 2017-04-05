@@ -30,6 +30,19 @@ public class testReg {
 	}
 
 	@Test
+	public void test2() throws Exception {
+		String msg = "dfaddabdddc";
+		Matcher m = Pattern.compile("(((?<!c)d)|[^d])*ab(((?<!c)d)|[^d])*").matcher(msg);
+		if(m.matches()) {
+			System.out.println(true);
+		} else {
+			System.out.println(false);
+		}
+		
+//		System.out.println(msg.contains("/third/"));
+	}
+	
+	@Test
 	public void transtime() {
 		System.out.println("20150909".replaceAll("(\\d{4})(\\d{2})(\\d{2})", "$1/$2/$3"));
 	}

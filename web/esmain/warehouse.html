@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>粮仓</title>
+  </head>
+	<script src="../xui/third/threejs/three.js"></script>
+	<script src="widget3d/js/threehelper.js"></script>
+	<script src="../xui/third/threejs/controls/OrbitControls.js"></script>
+	<script src="../xui/third/threejs/renderers/CSS3DRenderer.js"></script>
+	<script src="../xui/third/threejs/loaders/MTLLoader.js"></script>
+	<script src="../xui/third/threejs/loaders/OBJLoader.js"></script>
+	<script src="../xui/third/jquery/jquery-1.9.1.min.js"></script>
+	<script src="widget3d/model/warehouse/js/esenfuncs.js"></script>
+	<script src="widget3d/model/warehouse/js/warehouse.js"></script>
+  <style>
+html, body {
+	width: 100%;
+	height: 100%;
+} 
+</style>
+<body style='margin: 0px; background-color: #bbbbbb; overflow: hidden;'><script>
+	var renderer	= new THREE.WebGLRenderer({
+		alpha		: true,
+		antialias: true
+	});
+	renderer.autoClear	= false;
+	renderer.setSize( window.innerWidth, window.innerHeight );
+	document.body.appendChild( renderer.domElement );
+
+	var updateFcts	= [];
+	var scene	= new THREE.Scene();
+	var camera	= new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.01, 10000 );
+	camera.position.z = 100;
+	var _initFaces = function(){
+		generatePoints();
+	}
+
+	//////////////////////////////////////////////////////////////////////////////////
+	//		Camera Controls							//
+	//////////////////////////////////////////////////////////////////////////////////
+	var controls	= new THREE.OrbitControls(camera)
+
+	//////////////////////////////////////////////////////////////////////////////////
+	//		handle resize							//
+	//////////////////////////////////////////////////////////////////////////////////
+
+	function onResize(){
+		// notify the renderer of the size change
+		renderer.setSize( window.innerWidth, window.innerHeight )
+		// update the camera
+		camera.aspect	= window.innerWidth / window.innerHeight
+		camera.updateProjectionMatrix()		
+	}
+	
+	window.addEventListener('resize', onResize, false)
+
+	//////////////////////////////////////////////////////////////////////////////////
+	//		render the scene						//
+	//////////////////////////////////////////////////////////////////////////////////
+	// render the webgl
+	updateFcts.push(function(){
+		renderer.render( scene, camera );		
+	})
+
+	_initFaces();
+
+	//////////////////////////////////////////////////////////////////////////////////
+	//		loop runner							//
+	//////////////////////////////////////////////////////////////////////////////////
+	requestAnimationFrame(function animate(){
+		// keep looping
+		requestAnimationFrame( animate );
+
+		updateFcts.forEach(function(updateFn){
+			updateFn()
+		})
+	})
+	
+	function generatePoints(){
+		/*
+		*仓房长宽高：52m*36m*8m
+		从数据推算：
+		X起点为2.5，X间距5，X轴总长度52 ，X轴结束点为47.5
+		Y起点为3，Y间距6，Y轴总长度36，Y轴结束点为33
+		Z固定为8
+		*/
+		var warehouse = new WareHouse(52,36,8,2.5,47.5,5,3,33,6,8);
+		var geometry = new THREE.BoxGeometry( 0.2, 0.25, 0.2 );
+		var material = new THREE.MeshBasicMaterial( {color: 0x00ff00} );
+    var meshs = warehouse.createDetector(geometry,material);
+    for(var i = 0; i < meshs.length;i++){
+    	scene.add(meshs[i]);
+    }
+	
+    var face = warehouse.createFace(data1);
+		createMesh(face);
+	}
+	
+	function createMesh(geometry){
+		
+		var texture = new THREE.TextureLoader().load( "grasslight-big.jpg" );
+		var material = new THREE.MeshBasicMaterial(
+			    	{
+			    		color:0xfffaf0
+			    		,side: THREE.DoubleSide
+			    	//,wireframe:true
+			    	//	,map:texture
+			    		});
+		
+		var spMesh = new THREE.Mesh(geometry,material);
+
+	    scene.add(spMesh);
+		
+	}
+</script></body>
+</html>

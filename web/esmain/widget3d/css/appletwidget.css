@@ -1,0 +1,41 @@
+/**************** loading 加载动画 ****************/
+.loading{
+	background:#000;
+	width:100%;
+	height:100%;
+	position:absolute;
+	top:0px;
+	left:0px;
+	z-index:3;
+}
+
+.loading > div {
+	display: block;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	padding: 0;
+	width: 500px;
+	height: 500px;
+	margin: -250px 0 0 -250px;
+	background-image: url(../images/loading.jpg);
+	-webkit-animation: loading 3s steps(60) infinite;
+	animation: loading 3s steps(60) infinite
+}
+
+@-webkit-keyframes loading {
+	0% {
+		background-position:0
+	}
+	100% {
+		background-position: -30000px;
+	}
+}
+@keyframes loading {
+	0% {
+		background-position:0
+	}
+	100% {
+		background-position: -30000px;
+	}
+}
