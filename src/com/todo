@@ -5,3 +5,9 @@ RandomAccessFile
 http://blog.csdn.net/czplplp_900725/article/details/37809579
 
 
+login是各工程的引用。esenlogin是esenlogin工程。
+1、CoCall单点的问题
+2、am权限问题。
+	打算把am分出来。svn和git的权限管理重新做工程。剩下的改esenlogin，即处理登录，也处理角色权限等。
+3、部署个内网测试环境
+本地需要tomcat、crowd、ldap
