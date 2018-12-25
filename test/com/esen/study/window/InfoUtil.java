@@ -3,6 +3,9 @@ package com.esen.study.window;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Cursor;
+/**
+ * jdk1.6,否则红的
+ */
 import java.awt.Desktop;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
