@@ -3,7 +3,8 @@ package com.esen.study.jnative;
 import org.junit.Test;
 import org.xvolks.jnative.JNative;
 import org.xvolks.jnative.Type;
-import org.xvolks.jnative.exceptions.NativeException;
+
+import com.sun.jna.WString;
 
 /**
  * Jnative是对JNI技术进行了封装，更加方便的让java去调用DLL。
@@ -23,9 +24,19 @@ import org.xvolks.jnative.exceptions.NativeException;
 public class TestJNADll {
 
 	@Test
+	public void test2() throws Exception {
+		CLibrary.INSTANCE.printf("Hello, World/n");
+	}
+
+	@Test
+	public void testDll1() throws Exception {
+		int isVM = TestDll1.INSTANCE.IsVMwarePresent();
+		System.out.println(isVM);
+	}
+
+	@Test
 	public void test() throws Exception {
 		System.setProperty("jnative.debug", "true");
-		/*
 		JNative jnt = new JNative("JNativeCpp.dll", "Transfer_Ethernet");
 		try {
 			jnt.setRetVal(Type.INT);
@@ -34,6 +45,5 @@ public class TestJNADll {
 		} finally {
 			jnt.dispose();
 		}
-		*/
 	}
 }
